@@ -1,0 +1,7 @@
+*~
+*.swp
+build/
+bin/
+*.o
+graph.png
+.tup/

@@ -1,0 +1,8 @@
+# File: StandardTupfile
+# Author: Bob Rubbens - Knights of the Compiler
+# Creation date: su 17-08-2014
+# Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
+
+include_rules
+
+: foreach *.cpp |> !cc |>
