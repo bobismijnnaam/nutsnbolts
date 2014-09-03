@@ -10,11 +10,6 @@
 	+ configurable (??)
 + Font manager
 	+ Alleen aangeven waar font staat, als iemand font request wordt ie geladen op die grootte, daarna gecached
-+ Texture manager
-	+ Heeft een manager class nodig
-	+ PersistentTexture die positie en shit behoudt
-	+ manager class is optioneel en managed met string keys de textures. textures zitten in groepen en kunnen per groep of individueel geladen worden.
-	+ groepen worden vertegenwoordigt door de map waar de textures instaan. bijv: texture map is media/textures, en dan heb je de groepen intro, game, lvlSelect, en dus mappen media/textures/intro, media/textures/game, media/textures/lvlSelect.
 + Text class uit Stormnado halen
 	+ Compatible maken met de nieuwe fontmanager & PersistentTexture
 	+ PersistentText
