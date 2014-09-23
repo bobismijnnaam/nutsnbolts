@@ -9,6 +9,7 @@
 // Public
 
 // Private
+#include "nnb/log/log.hpp"
 
 namespace nnb {
 
@@ -28,13 +29,17 @@ namespace nnb {
 		class T
 	>class SimpleStateFactory : public AbstractStateFactory {
 	public:
-		SimpleStateFactory(std::string preferredID) : 
-			id(preferredID) {};
+		SimpleStateFactory(std::string id_) :
+		id{id_} {
+		}
 
-		~SimpleStateFactory() {};
+		~SimpleStateFactory() {
+		}
 
 		virtual State* get() {
-			return new T();
+			State* newState = new T();
+			newState->setID(id);
+			return newState;
 		}
 
 		std::string getID() {
@@ -43,6 +48,7 @@ namespace nnb {
 
 	private:
 		std::string id;
+
 	} ;
 
 }

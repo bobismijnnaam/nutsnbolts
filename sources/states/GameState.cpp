@@ -8,6 +8,7 @@
 
  // Private
 #include "nnb/states/GameState.hpp" 
+#include "nnb/states/StateMachine.hpp"
 
 nnb::GameState::GameState() {
 

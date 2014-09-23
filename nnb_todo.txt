@@ -1,19 +1,8 @@
 + nog een keer naar gamestate kijken
-	+ niet wat te omslachtig?
-	+ id's versimpelen
 	+ exit() command toevoegen (alias voor SET met EXIT state)
-	+ font manager
-	+ smart texture
 + expand logging to trace, debug, warning, error lvls
 + make state/gamestate distinction less hacky
 	+ fixed/variable timestep variations
 	+ configurable (??)
-+ Font manager
-	+ Alleen aangeven waar font staat, als iemand font request wordt ie geladen op die grootte, daarna gecached
-+ Text class uit Stormnado halen
-	+ Compatible maken met de nieuwe fontmanager & PersistentTexture
-	+ PersistentText
+	+ move out code from several premade states (exit, null state) to .cpp files
 + Subsystem class. Initializes sdl and ttf and such, and deinitializes them.
-
-Hoe rare crash te onderzoeken:
-wordt gedeconstruct in omgekeerde volgorde. Dus in elke destructor een log plaatsen, kijken waar hij stopt en vanuit daar verder

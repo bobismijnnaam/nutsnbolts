@@ -34,10 +34,6 @@ namespace nnb {
 
 		}
 
-		std::string getID() {
-			return nnb::StateMachine::STATE_EXIT;
-		}
-
 	private:
 
 	} ;

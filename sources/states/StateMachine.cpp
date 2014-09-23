@@ -101,7 +101,7 @@ void nnb::StateMachine::update() {
 void nnb::StateMachine::addState(nnb::AbstractStateFactory* fact) {
 	states[fact->getID()] = fact;
 
-	NNB_LOG << "GameState registered: " << fact->getID();	
+	NNB_LOG << "GameState registered: " << fact->getID();
 }
 
 void nnb::StateMachine::changeState(StateAction inputAction) {

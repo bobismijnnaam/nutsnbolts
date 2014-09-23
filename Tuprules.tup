@@ -6,7 +6,7 @@
 # TODO: Switch to RPATH instead of statically compiling for optimal future proofness
 
 # Program name
-APP := pandora
+APP := nnb
 
 # Used compiler
 # For emscripten compiling
@@ -18,8 +18,8 @@ CC := g++
 LIBS += -lmingw32
 LIBS += -lSDL2main
 LIBS += -lSDL2
-LIBS += -static-libstdc++ 
-LIBS += -static-libgcc
+# LIBS += -static-libstdc++ 
+# LIBS += -static-libgcc
 
 # Standard optimization level
 # CFLAGS += -O
@@ -50,14 +50,11 @@ CFLAGS += -Wunreachable-code
 # CFLAGS += -Wunused
 
 # All project headers should be located here
-PROJ_HEADERS := ..\..\headers
+# PROJ_HEADERS := ..\..\headers
+# PROJ_HEADERS := $(TUP_CWD)\headers
 
 # All include search directories
-INCLUDE_DIRS += -I $(PROJ_HEADERS)
-INCLUDE_DIRS += -I c:\mingw\dev_libs\include
-
-# All library search directories
-LIB_DIRS += -L c:\mingw\dev_libs\lib
+INCLUDE_DIRS += -I $(TUP_CWD)\headers
 
 # To convert *.cpp -> *.o
 !cc = |> ^ Compiling %d/%f^ $(CC) $(INCLUDE_DIRS) $(LIB_DIRS) $(CFLAGS) $(LIBS) -c %f -o %o |> ../../build/%d-%B.o ../<modules>
@@ -67,6 +64,10 @@ LIB_DIRS += -L c:\mingw\dev_libs\lib
 
 # To convert *.cpp -> module.o
 !ctoo = |> ^ Compiling %d^ $(CC) $(INCLUDE_DIRS) $(LIB_DIRS) $(CFLAGS) $(LIBS) -c %f -o %o |> ../../build/%d.o ../<modules>
+
+# To combine all headers into module headers
+!hpptohpp = |> ^ Combining header %d^ combineheaders.bat |> 
+# !hpptohpp = |> ^ Combining header %d^ python CombineHeadersToParent.pt |> ../%d.hpp
 
 # TODO: This method is not really nice, since ld tends to grab c libraries and not c++ ones (that's why -lsupc++ is needed)
 

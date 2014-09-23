@@ -8,6 +8,8 @@
 
  // Private
 #include "nnb/states/State.hpp"
+#include "nnb/states/StateMachine.hpp"
+#include "nnb/log/log.hpp"
 
 nnb::State::State() {
 
@@ -27,4 +29,12 @@ void nnb::State::activate() {
 
 void nnb::State::deactivate() {
 
+}
+
+std::string nnb::State::getID() {
+	return id;
+}
+
+void nnb::State::setID(std::string id_) {
+	id = id_;
 }

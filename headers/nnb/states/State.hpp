@@ -35,11 +35,14 @@ namespace nnb {
 		virtual void deactivate();
 
 		/**
-		 * Returns the ID of the state
+		 * Returns the ID of the state. 
 		 */
-		virtual std::string getID() = 0;
+		std::string getID();
+		
+		void setID(std::string id_);
 
 	private:
+		std::string id;
 
 	};
 

@@ -44,11 +44,6 @@ namespace nnb {
 		 */
 		virtual void render() const;
 
-		/**
-		 * Returns ID (name) of state
-		 */
-		virtual std::string getID() = 0;
-
 	private:
 		Uint32 lastFrame = 0;
 

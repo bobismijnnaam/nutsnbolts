@@ -12,7 +12,6 @@
 #include "nnb/log/log.hpp"
 #include "nnb/utils/StringHelpers.hpp"
 
-
 nnb::FontManager::FontManager(SDL_Renderer* tgt_, std::string rootPath_) :
 fonts(), 
 rootPath{rootPath_},

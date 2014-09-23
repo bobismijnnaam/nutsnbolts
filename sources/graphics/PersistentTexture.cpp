@@ -115,7 +115,7 @@ void nnb::PersistentTexture::setTexture(SDL_Renderer* newTgt, SDL_Texture* newTx
 	tgt = newTgt;
 
 	int err = SDL_QueryTexture(txt, &format, NULL, &w, &h);
-	if (err != 0) {
+	if (err != 0 && (newTgt != NULL && newTxt != NULL)) {
 		NNB_LOG << "Unable to query texture properties. Error code " << err << ", error message: " << SDL_GetError();
 	}
 

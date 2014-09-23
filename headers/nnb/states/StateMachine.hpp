@@ -38,9 +38,9 @@ namespace nnb {
 
 		void addState(nnb::AbstractStateFactory* fact);
 		
-		template<class C>
+		template<class T>
 		void addState(std::string id) {
-			addState(new SimpleStateFactory<C>(id));
+			addState(new SimpleStateFactory<T>(id));
 		}
 
 		static const std::string STATE_NONE;
