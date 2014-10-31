@@ -5,7 +5,7 @@
 
 // Public
 #include <string>
-#include "nnb/utils/dirent.h"
+#include <dirent.h>
 #include <vector>
 
 // Private

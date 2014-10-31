@@ -6,6 +6,13 @@
 #ifndef NNB_CONSTANTS_HPP
 #define NNB_CONSTANTS_HPP
 
-const float NNB_M_PI = 3.14159265;
+namespace nnb {
+
+	float const PI = 3.14159265;
+
+	bool const SUCCESS = true;
+	bool const FAILURE = false;
+
+}
 
 #endif

@@ -6,6 +6,7 @@
 // Public
 #include <vector>
 #include <string>
+#include <sstream>
 
 // Private
 #include "nnb/utils/StringHelpers.hpp"
@@ -29,17 +30,41 @@ namespace nnb {
 		return result;
 	}
 
+	std::vector<std::string> chopLeft(std::string input, std::string delimiter) {
+		int pos = input.find(delimiter);
+		if (pos == std::string::npos) return {};
+
+		std::string left = input.substr(0, pos);
+		std::string right = input.substr(pos + 1, input.size());
+		
+		return {left, right};
+	}
+
+	std::vector<std::string> chopRight(std::string input, std::string delimiter) {
+		int pos = input.rfind(delimiter);
+		if (pos == std::string::npos) return {};
+
+		std::string left = input.substr(0, pos);
+		std::string right = input.substr(pos, input.size());
+		
+		return {left, right};
+	}
+
 	bool endsWith(std::string input, std::string suffix) {
 		if (suffix.size() > input.size()) {
 			return false;
 		}
-
+		
 		if (suffix.empty() && input.empty()) {
 			return true;
 		}
+
+		if (suffix.empty() || input.empty()) {
+			return false;
+		}
 		
 		int j = input.size() - 1;
-		for (int i = suffix.size() - 1; i >= 0; i--) {
+		for (int i = suffix.size() - 1; i >= 0; --i) {
 			if (suffix[i] != input[j])
 				return false;
 
@@ -49,8 +74,82 @@ namespace nnb {
 		return true;
 	}
 
+	bool beginsWith(std::string input, std::string prefix) {
+		if (prefix.size() > input.size()) {
+			return false;
+		}
+	
+		if (prefix.empty() && input.empty()) {
+			return true;
+		}
+
+		if (prefix.empty() || input.empty()) {
+			return false;
+		}
+
+		for (int i = 0; i < prefix.size(); ++i) {
+			if (prefix[i] != input[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	bool contains(std::string input, std::string query) {
 		return input.find(query, 0) != std::string::npos;
+	}
+
+	std::string trim(std::string input) {
+		return trimLeft(trimRight(input));
+	}
+
+	std::string trimLeft(std::string input) {
+		int left = input.find_first_not_of(" \n\r\t");
+
+		if (left == std::string::npos) {
+			return "";
+		}
+
+		return input.substr(left, input.size());
+	}
+
+	std::string trimRight(std::string input) {
+		int right = input.find_last_not_of(" \n\r\t");
+		
+		if (right == std::string::npos) {
+			return "";
+		}
+
+		return input.substr(0, right + 1);
+	}
+
+	std::string tos(int p) {
+		std::stringstream ss;
+		ss << p;
+		return ss.str();
+	}
+
+	std::string tos(float p) {
+		std::stringstream ss;
+		ss << p;
+		return ss.str();
+	}
+
+	int stoi(std::string p) {
+		std::stringstream ss;
+		ss << p;
+		int i;
+		ss >> i;
+		return i;
+	}
+
+	float stof(std::string p) {
+		std::stringstream ss;
+		ss << p;
+		float f;
+		ss >> f;
+		return f;
 	}
 
 }

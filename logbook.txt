@@ -1,0 +1,32 @@
+20141016:
+Worked a bit on GameFrame.hpp, the thing that initializes subsystems.
+
+20141024:
+Finished GameFrame.hpp. Tinkered a bit with log.hpp. Settled on ERROR, DEBUG,
+WARNING, INFO, TRACE logging calls. Also added a NullBuffer and Nullstream
+class, acts like /dev/null. Don't instantiate them, just use the global
+nullstream instance. Also added an exit() function to the statemachine,
+manually changing to the exit state is a lot of typework.
+
+20141025:
+Worked on Settings.hpp. Edited logger to use a conditional instead of a null
+device. That way the compiler will optimize the debug loggings away.
+
+20141026:
+Added a function chopLeft(). Haven't worked on it yet. Scratch that, just
+finished chopLeft() and chopRight(). They just break a string in two. Added
+stringhelpersfuncs toInt, toFloat and toString. And removed them, seems that
+they are in the stl since C++11! Seems that Settings.hpp is finished. Removed
+the possibility to set settings, since it might (not) preserve markup of the
+file. And the getInt, getFloat functions use exceptions! stoi not supported by
+32bit MinGW??? Unbelievable. Fuck this, I'm writing my own str <-> float,int
+functions!!!!!!111! Done. And Settings.hpp now also works, after fixing a
+dealbreaking bug. I really should do some testing and documentation soon.
+Altough documentation doesn't really matter since I don't have any
+autocomplete in here. Testing is important though.
+
+20141031:
+Updated todolist. Updated it some more. Changed a lot of dates to YYYY-MM-DD.
+This should be default everywhere. Tried to get CombineHeadersIntoParent.py to
+work for all header modules. Tup is still whining about 64-bit executables.
+Have to try of cmd.exe can start in 32-bit mode.

@@ -1,8 +1,29 @@
-+ nog een keer naar gamestate kijken
-	+ exit() command toevoegen (alias voor SET met EXIT state)
-+ expand logging to trace, debug, warning, error lvls
-+ make state/gamestate distinction less hacky
++ StateMachine
+	+ Rename to GameState machine (it's not really a state machine! every
+		state goes to every state you know.)
+	+ make state/gamestate distinction less hacky
+		+ This will probably be solved by renaming it to gamestate machine.
+			Then only having a gamestate class (as in, not having a state
+			class) is just fine.
 	+ fixed/variable timestep variations
-	+ configurable (??)
-	+ move out code from several premade states (exit, null state) to .cpp files
-+ Subsystem class. Initializes sdl and ttf and such, and deinitializes them.
+	+ move out code from several premade states (exit, null state) to .cpp
+		files from hpp files
+	+ GM should have a stateStarted method()
+	+ GM should catch quit event from SDL
++ testing!
+	+ catch framework
++ PersistentText, PersistentTexture
+	+ Is naam wel duidelijk genoeg?
+		+ PersistentTexture missch TextureContainer?
+		+ PersistentText missch label?
+	+ Ownership van resources
+		+ Voor PersistentTexture is dit wel duidelijk als hij TextureContainer
+		genoemd word.
+		+ Voor PersistentText niet. Label noemen en interne texture die de
+		text is storen in een unique_ptr? Dan is elke label instance unique en
+		heb je std::move nodig enzo voor verplaatsen
++ Pack .hpp files into hpp file per module (I have a script for this iirc,
+	check cbt)
++ Change all file description dates to YYYY-MM-DD. Done at some places but not
+all.
++ Make cbt able to add gamestates!

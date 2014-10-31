@@ -115,6 +115,10 @@ void nnb::StateMachine::changeState(nnb::StateAction inputAction, std::string in
 	NNB_LOG << "Next state: " << inputTarget << ", action: " << nnb::stateActionToString(inputAction);
 }
 
+void nnb::StateMachine::exit() {
+	changeState(nnb::StateAction::SET, nnb::StateMachine::STATE_EXIT);
+}
+
 std::string nnb::StateMachine::getCurrentStateID() {
 	if (stateStack.empty()) {
 		return nnb::StateMachine::STATE_NONE;

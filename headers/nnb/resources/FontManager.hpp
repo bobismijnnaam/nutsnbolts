@@ -1,6 +1,6 @@
-// File: FontManager.hpp2
+// File: FontManager.hpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: su 17-08-2014
+// Creation date: 2014-08-17
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 #ifndef NNB_FONTMANAGER_HPP

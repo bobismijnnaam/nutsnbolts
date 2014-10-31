@@ -132,7 +132,7 @@ void nnb::PersistentText::commit() {
 }
 
 void nnb::PersistentText::render() const {
-	if (dirty) NNB_LOG << "Warning! Dirty render should not happen, commit() beforehand";
+	if (dirty) NNB_WARNING << "Warning! Dirty render should not happen, commit() beforehand";
 	txt.render();
 }
 

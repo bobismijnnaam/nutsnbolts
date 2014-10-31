@@ -34,6 +34,7 @@ namespace nnb {
 		void update();
 		void changeState(StateAction inputAction, std::string inputTarget);
 		void changeState(StateAction inputAction);
+		void exit();
 		std::string getCurrentStateID();
 
 		void addState(nnb::AbstractStateFactory* fact);
