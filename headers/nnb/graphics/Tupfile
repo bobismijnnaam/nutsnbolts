@@ -1,1 +1,6 @@
-: *.hpp |> CombineHeadersToParent.py |> ../%d.hpp
+# File: Tupfile
+# Author: Bob Rubbens - Knights of the Compiler
+# Creation date: 2014-10-31
+# Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
+
+# : *.hpp |> CombineHeadersToParent.bat |> ../%d.hpp
