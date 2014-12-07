@@ -15,7 +15,7 @@
 // Private
 #include "nnb/log/log.hpp"
 #include "nnb/utils/Directory.hpp"
-#include "nnb/graphics/PersistentTexture.hpp"
+#include "nnb/graphics/TextureContainer.hpp"
 
 namespace nnb {
 
@@ -33,7 +33,7 @@ namespace nnb {
 		 * Don't use this if you can use getTexture()!
 		 */
 		SDL_Texture* getRaw(std::string group, std::string key) const; 
-		nnb::PersistentTexture getTexture(std::string group, std::string key) const; 
+		nnb::TextureContainer getTexture(std::string group, std::string key) const; 
 
 	private:
 		SDL_Renderer *tgt;

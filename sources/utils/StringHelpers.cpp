@@ -15,7 +15,7 @@ namespace nnb {
 
 	std::vector<std::string> split(std::string input, std::string delimiter) {
 		std::vector<std::string> result;
-		if (input.find(delimiter) == std::string::npos) return {};
+		if (input.find(delimiter) == std::string::npos) return {input};
 		result.push_back("");
 
 		for (char c : input) {

@@ -12,7 +12,7 @@
 #include <string>
 
 // Private
-#include "nnb/graphics/PersistentText.hpp"
+#include "nnb/graphics/Text.hpp"
 
 namespace nnb {
 	
@@ -22,7 +22,7 @@ namespace nnb {
 		~FontManager();
 
 		TTF_Font* getRaw(std::string fontName, int size);
-		nnb::PersistentText getText(std::string fontName, int size);
+		nnb::Text getText(std::string fontName, int size);
 
 	private:
 		std::unordered_map<std::string, std::unordered_map<int, TTF_Font*>> fonts;

@@ -31,3 +31,13 @@ SDL_Color nnb::getSDL_Color(Color clr) {
 			return {0, 0, 0, 0};
 	}
 }
+
+bool nnb::pointInRect(SDL_Point p, SDL_Rect r) {
+	if (p.x >= r.x && p.x <= r.x + r.w) {
+		if (p.y >= r.y && p.y <= r.y + r.h) {
+			return true;
+		}
+	}
+
+	return false;
+}

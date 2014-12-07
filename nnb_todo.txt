@@ -5,6 +5,7 @@
 		+ This will probably be solved by renaming it to gamestate machine.
 			Then only having a gamestate class (as in, not having a state
 			class) is just fine.
+		+ DO THIS
 	+ fixed/variable timestep variations
 	+ move out code from several premade states (exit, null state) to .cpp
 		files from hpp files
@@ -13,17 +14,25 @@
 + testing!
 	+ catch framework
 + PersistentText, PersistentTexture
-	+ Is naam wel duidelijk genoeg?
-		+ PersistentTexture missch TextureContainer?
-		+ PersistentText missch label?
-	+ Ownership van resources
-		+ Voor PersistentTexture is dit wel duidelijk als hij TextureContainer
-		genoemd word.
-		+ Voor PersistentText niet. Label noemen en interne texture die de
-		text is storen in een unique_ptr? Dan is elke label instance unique en
-		heb je std::move nodig enzo voor verplaatsen
+	+ Nadenken over clone method, die compleet individuele kopie maakt met
+	zelfde settings enzo
 + Pack .hpp files into hpp file per module (I have a script for this iirc,
 	check cbt)
 + Change all file description dates to YYYY-MM-DD. Done at some places but not
 all.
 + Make cbt able to add gamestates!
++ Make 32-bit C(++) program that generates packed headers. ******Or compile to 32bit
+python executable. Jup, I need a 32-bit version of Python 3.3*****FOR THE
+RECORD THE PYTHON THING DOESNT WORK dammit. Just use updated tup!
++ Owning texture container (just a std::unique_ptr typedef?)
++ Give nnb::Text an imitate() function to copy all settings from another
++ nnb::Text alignment with float instead of enum!
++ Make nnb::GameState capture SDL_Quit events
++ Renderstack, keeps track of rendertargets and can push/pop rendertargets
++ What if an object that is initialized using an initializer list needs a
+texture loaded in the constructor. When the object is initialized the texture
+group is not yet loaded!
+	+ Oplossing: Wanneer een afbeelding van een groep voor het eerst geladen wordt, rest van
+	groep ook laden
++ nnb::intersectOrWithin voor rects (!SDL_IntersectRect(&world, &bulletShape,
+			&interRect) && SDL_RectEmpty(&interRect)))

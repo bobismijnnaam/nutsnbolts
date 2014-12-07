@@ -11,6 +11,7 @@
 #include "nnb/resources/FontManager.hpp"
 #include "nnb/log/log.hpp"
 #include "nnb/utils/StringHelpers.hpp"
+#include "nnb/utils/unique_ptr.hpp"
 
 nnb::FontManager::FontManager(SDL_Renderer* tgt_, std::string rootPath_) :
 fonts(), 
@@ -65,8 +66,8 @@ TTF_Font* nnb::FontManager::getRaw(std::string fontName, int size) {
 	}
 }
 
-nnb::PersistentText nnb::FontManager::getText(std::string fontName, int size) {
-	nnb::PersistentText temp(tgt);
+nnb::Text nnb::FontManager::getText(std::string fontName, int size) {
+	nnb::Text temp(tgt);
 	temp.setFont(getRaw(fontName, size));
-	return temp;
+	return std::move(temp);
 }

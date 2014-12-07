@@ -3,4 +3,4 @@
 # Creation date: 2014-10-31
 # Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
-# : *.hpp |> CombineHeadersToParent.bat |> ../%d.hpp
+: *.hpp |> CombineHeadersToParent |> ../%d.hpp

@@ -1,10 +1,10 @@
-// File: PersistentTexture.hpp
+// File: TextureContainer.hpp
 // Author: Bob Rubbens - Knights of the Compiler
 // Creation date: ma 21-07-2014
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
-#ifndef NNB_PERSISTENTTEXTURE_HPP
-#define NNB_PERSISTENTTEXTURE_HPP
+#ifndef NNB_TEXTURECONTAINER_HPP
+#define NNB_TEXTURECONTAINER_HPP
 
 // Public
 #include "SDL2/SDL.h"
@@ -14,16 +14,17 @@
 
 namespace nnb {
 	
-	class PersistentTexture {
+	class TextureContainer {
 	public:
-		PersistentTexture();
-		PersistentTexture(SDL_Renderer* tgt_, SDL_Texture* txt_);
-		~PersistentTexture();
+		TextureContainer();
+		TextureContainer(SDL_Renderer* tgt_, SDL_Texture* txt_);
+		~TextureContainer();
 
 		void setSrcRect(SDL_Rect newRect);
 		void setRotation(double newAngle);
-		void setCenter(SDL_Point newCenter);
-		void setCenter(int x, int y);
+		void setRotationCenter(SDL_Point newCenter);
+		void setRotationCenter(int x, int y);
+		void setOrigin(int x, int y);
 		void setFlip(SDL_RendererFlip newFlip);
 		
 		void setAlpha(Uint8 newAlpha);
@@ -56,6 +57,8 @@ namespace nnb {
 		SDL_Rect getBounds() const;
 		void render() const;
 
+		TextureContainer clone() const;
+
 	private:
 		SDL_Renderer* tgt;
 		SDL_Texture* txt;
@@ -63,6 +66,7 @@ namespace nnb {
 		SDL_Rect src, dst;
 		double angle;
 		SDL_Point center;
+		SDL_Point origin;
 		SDL_RendererFlip flip;
 		Uint8 alpha;
 		SDL_BlendMode blendMode;

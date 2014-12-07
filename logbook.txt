@@ -30,3 +30,32 @@ Updated todolist. Updated it some more. Changed a lot of dates to YYYY-MM-DD.
 This should be default everywhere. Tried to get CombineHeadersIntoParent.py to
 work for all header modules. Tup is still whining about 64-bit executables.
 Have to try of cmd.exe can start in 32-bit mode.
+
+20141106:
+Made PersistentTexture use a unique_ptr for storing the texture (since it is
+the owner and previously it just left a dangling pointer behind). Next up:
+refactoring the names of PersistentText and PersistentTexture!
+
+20141106:
+Refactored PersistentTexture into TextureContainer, and PersistentText into
+Text.
+
+20141128:
+Added a rather useless clone function to TextureContainer. (assignment
+operator just copies anyway so it's really useless). Also changed PointInRect
+to pointInRect.
+
+20141201:
+Seems that I forgot that nnb::FontManager::getText() returned a unique_ptr to
+a Text instance. Which is weird, a Text instance containing a unique ptr to a
+SDL_Texture or something is way more elegant and clear. Refactoring now. And
+apparently I had the SDL_Texture in a unique_ptr, PLUS I deleted it in the
+destructor. Hurray for painfully defensive coding ;_; So yeah.
+nnb::FontManager::getText() now returns a nnb::Text, which is kinda different
+because it is not a smart pointer any longer but actually CONTAINS one. Yes.
+AND: I fixed a major bug in nnb::Text, variable autoCommit was initialized
+with autoCommit instead of autoCommit_. Yup, seriously.
+
+20141206:
+Added a VAlign property to nnb::Text, and changed Align to HAlign (along with
+the enum). Added lots of todo's. Ludum Dare 31!

@@ -33,7 +33,7 @@ LIBS += -lSDL2
 # Most important!
 CFLAGS += -std=c++11
 
-# CFLAGS += -g
+CFLAGS += -g
 # CFLAGS += -Wall
 # CFLAGS += -Weffc++
 CFLAGS += -pedantic
@@ -47,7 +47,7 @@ CFLAGS += -Wshadow
 CFLAGS += -Wswitch-default
 CFLAGS += -Wswitch-enum
 CFLAGS += -Wunreachable-code
-# CFLAGS += -Wunused
+CFLAGS += -Wunused
 
 # All project headers should be located here
 # PROJ_HEADERS := ..\..\headers

@@ -27,6 +27,7 @@ namespace nnb {
 
 	SDL_Color getSDL_Color(Color clr);
 	
+	bool pointInRect(SDL_Point p, SDL_Rect r);
 
 }
 

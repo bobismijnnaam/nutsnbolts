@@ -96,8 +96,8 @@ SDL_Texture* nnb::TextureManager::getRaw(std::string group, std::string key) con
 	}
 }
 
-nnb::PersistentTexture nnb::TextureManager::getTexture(std::string group, std::string key) const {
+nnb::TextureContainer nnb::TextureManager::getTexture(std::string group, std::string key) const {
 	SDL_Texture* theTexture = getRaw(group, key);
-	return nnb::PersistentTexture(tgt, theTexture);
+	return nnb::TextureContainer(tgt, theTexture);
 }
 

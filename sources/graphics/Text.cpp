@@ -1,70 +1,71 @@
-// File: PersistentText.cpp
+// File: Text.cpp
 // Author: Bob Rubbens - Knights of the Compiler
 // Creation date: ma 21-07-2014
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 // Public
+#include <memory>
+#include "nnb/utils/unique_ptr.hpp"
 
 // Private
-#include "nnb/graphics/PersistentText.hpp"
+#include "nnb/graphics/Text.hpp"
 
-nnb::PersistentText::PersistentText() : PersistentText(NULL, true) {}
+nnb::Text::Text() : Text(NULL, true) {}
 
-nnb::PersistentText::PersistentText(SDL_Renderer* tgt_, bool autoCommit_) :
-autoCommit{autoCommit},
-align{nnb::Align::LEFT},
+nnb::Text::Text(SDL_Renderer* tgt_, bool autoCommit_) :
+autoCommit{autoCommit_},
+halign{nnb::HAlign::LEFT},
+valign{nnb::VAlign::TOP},
 txt(tgt_, NULL),
 tgt{tgt_},
 dst{0, 0, 0, 0},
 clr{0, 0, 0, 255} {
 }
 
-nnb::PersistentText::~PersistentText() {
-	if (txt.getTexture() != NULL) {
-		SDL_DestroyTexture(txt.getTexture());
-		txt.setTexture(NULL, NULL);
-	}
-}
-
-void nnb::PersistentText::setText(std::string text_) {
+void nnb::Text::setText(std::string text_) {
 	text = text_;
 	dirty = true;
 	if (autoCommit) commit();
 }
 
-void nnb::PersistentText::setFont(TTF_Font *font_) {
+void nnb::Text::setFont(TTF_Font *font_) {
 	font = font_;
 	dirty = true;
 	if (autoCommit) commit();
 }
 
-void nnb::PersistentText::setPosition(int x_, int y_) {
+void nnb::Text::setPosition(int x_, int y_) {
 	x = x_;
 	y = y_;
 	calculateBounds();
 }
 
-void nnb::PersistentText::setX(int x_) {
+void nnb::Text::setX(int x_) {
 	setPosition(x_, getY());
 }
 
-void nnb::PersistentText::setY(int y_) {
+void nnb::Text::setY(int y_) {
 	setPosition(getX(), y_);
 }
 
-void nnb::PersistentText::setAlign(Align align_) {
-	align = align_;
+void nnb::Text::setHAlign(HAlign align_) {
+	halign = align_;
 	calculateBounds();
 }
 
-void nnb::PersistentText::setColor(SDL_Color clr_) {
+void nnb::Text::setVAlign(VAlign align_) {
+	valign = align_;
+	calculateBounds();
+}
+
+void nnb::Text::setColor(SDL_Color clr_) {
 	clr = clr_;
 	clr.a = 255;
 	dirty = true;
 	if (autoCommit) commit();
 }
 
-void nnb::PersistentText::setColor(int r, int g, int b) {
+void nnb::Text::setColor(int r, int g, int b) {
 	clr.r = r;
 	clr.g = g;
 	clr.b = b;
@@ -72,48 +73,63 @@ void nnb::PersistentText::setColor(int r, int g, int b) {
 	if (autoCommit) commit();
 }
 
-void nnb::PersistentText::setColor(nnb::Color clr_) {
+void nnb::Text::setColor(nnb::Color clr_) {
 	clr = nnb::getSDL_Color(clr_);
 	dirty = true;
 	if (autoCommit) commit();
 }
 
-void nnb::PersistentText::setAlpha(Uint8 alpha_) {
+void nnb::Text::setAlpha(Uint8 alpha_) {
 	txt.setAlpha(alpha_);
 }
 
 // TODO: Make sure autocommit works everywhere
-void nnb::PersistentText::setAutoCommit(bool autoCommit_) {
+void nnb::Text::setAutoCommit(bool autoCommit_) {
 	autoCommit = autoCommit_;
 }
 
-void nnb::PersistentText::calculateBounds() {
+void nnb::Text::calculateBounds() {
 	txt.resetSize();
 
-	switch (align) {
-	case nnb::Align::LEFT:
+	switch (halign) {
+	case nnb::HAlign::LEFT:
 		txt.setX(x);
 		break;
-	case nnb::Align::RIGHT:
+	case nnb::HAlign::RIGHT:
 		txt.setX(x - txt.getRenderWidth());
 		break;
-	case nnb::Align::CENTER:
+	case nnb::HAlign::CENTER:
 		txt.setX(x - txt.getRenderWidth() / 2);
 		break;
 	default:
-		NNB_LOG << "ERROR! This case should not be triggered";
+		txt.setX(x);
+		NNB_ERROR << "This case should not be triggered";
 		break;
 	}
 
-	txt.setY(y);
+	switch (valign) {
+	case nnb::VAlign::TOP:
+		txt.setY(y);
+		break;
+	case nnb::VAlign::CENTER:
+		txt.setY(y - txt.getRenderHeight() / 2);
+		break;
+	case nnb::VAlign::BOTTOM:
+		txt.setY(y - txt.getRenderHeight());
+		break;
+	default:
+		txt.setY(y);
+		NNB_ERROR << "This case should not be triggered";
+		break;
+	}
 }
 
-void nnb::PersistentText::commit() {
+void nnb::Text::commit() {
 	if (!dirty) return;
 	
 	if (text == "") {
 		if (txt.getTexture() != NULL) {
-			SDL_DestroyTexture(txt.getTexture());
+			txtTexture.reset(nullptr);
 			txt.setTexture(tgt, NULL);
 		}
 	} else {
@@ -121,37 +137,36 @@ void nnb::PersistentText::commit() {
 		if (tempText == NULL) {
 			NNB_LOG << "ERROR! Text generation of \"" << text << "\" failed. The error message: " << TTF_GetError();
 		}
-		SDL_DestroyTexture(txt.getTexture());
 		txt.setTexture(tgt, SDL_CreateTextureFromSurface(tgt, tempText));
 		SDL_FreeSurface(tempText);
-
+		txtTexture.reset(txt.getTexture());
 		calculateBounds();
 	}
 
 	dirty = false;
 }
 
-void nnb::PersistentText::render() const {
+void nnb::Text::render() const {
 	if (dirty) NNB_WARNING << "Warning! Dirty render should not happen, commit() beforehand";
 	txt.render();
 }
 
-int nnb::PersistentText::getWidth() const {
+int nnb::Text::getWidth() const {
 	return txt.getRenderWidth();
 }
 
-int nnb::PersistentText::getHeight() const {
+int nnb::Text::getHeight() const {
 	return txt.getRenderHeight();
 }
 
-int nnb::PersistentText::getX() const {
+int nnb::Text::getX() const {
 	return x;
 }
 
-int nnb::PersistentText::getY() const {
+int nnb::Text::getY() const {
 	return y;
 }
 
-SDL_Rect nnb::PersistentText::getBounds() const {
+SDL_Rect nnb::Text::getBounds() const {
 	return txt.getBounds();
 }
