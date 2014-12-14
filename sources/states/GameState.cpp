@@ -9,6 +9,7 @@
  // Private
 #include "nnb/states/GameState.hpp" 
 #include "nnb/states/StateMachine.hpp"
+#include "nnb/log/log.hpp"
 
 nnb::GameState::GameState() {
 
@@ -21,6 +22,13 @@ nnb::GameState::~GameState() {
 void nnb::GameState::update() {
 	SDL_Event e;
 	while(SDL_PollEvent(&e)) {
+		if (e.type == SDL_MOUSEBUTTONDOWN) {
+			NNB_INFO << "SDL_MOUSEBUTTONDOWN " << e.type;
+		} else if (e.type == SDL_MOUSEBUTTONUP) {
+			NNB_INFO << "SDL_MOUSEBUTTONUP " << e.type;
+		} else if (e.type == SDL_MOUSEMOTION) {
+			NNB_INFO << "SDL_MOUSEMOTION " << e.type;
+		}
 		event(e);
 	}
 

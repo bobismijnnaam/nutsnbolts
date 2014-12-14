@@ -32,7 +32,7 @@ namespace nnb {
 
 	std::vector<std::string> chopLeft(std::string input, std::string delimiter) {
 		int pos = input.find(delimiter);
-		if (pos == std::string::npos) return {};
+		if (pos == std::string::npos) return {input};
 
 		std::string left = input.substr(0, pos);
 		std::string right = input.substr(pos + 1, input.size());
@@ -42,7 +42,7 @@ namespace nnb {
 
 	std::vector<std::string> chopRight(std::string input, std::string delimiter) {
 		int pos = input.rfind(delimiter);
-		if (pos == std::string::npos) return {};
+		if (pos == std::string::npos) return {input};
 
 		std::string left = input.substr(0, pos);
 		std::string right = input.substr(pos, input.size());
@@ -150,6 +150,14 @@ namespace nnb {
 		float f;
 		ss >> f;
 		return f;
+	}
+
+	long stol(std::string p) {
+		std::stringstream ss;
+		ss << p;
+		long l;
+		ss >> l;
+		return l;
 	}
 
 }

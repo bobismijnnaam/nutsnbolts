@@ -36,3 +36,9 @@ group is not yet loaded!
 	groep ook laden
 + nnb::intersectOrWithin voor rects (!SDL_IntersectRect(&world, &bulletShape,
 			&interRect) && SDL_RectEmpty(&interRect)))
++ Command line window is stuck ;_;
++ DOUBLE CHECK ALL THE MANAGERS FOR ITERATING AND ERASING AND STUFF
++ A class which can be a member on top of another class which loads texture
+groups and stuff
+	+ Or integrate into gamestate?
++ Make nnb::chopLeft return tuples (right also)

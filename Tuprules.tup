@@ -22,13 +22,14 @@ LIBS += -lSDL2
 # LIBS += -static-libgcc
 
 # Standard optimization level
-# CFLAGS += -O
+# CFLAGS += -O0
 
 # Release optimization level
 # CFLAGS += -O2
 
 # Gets rid of the console window
-# CFLAGS = -Wl,-subsystem,windows
+# CFLAGS += -Wl,-subsystem,windows
+CFLAGS += -mwindows
 
 # Most important!
 CFLAGS += -std=c++11
@@ -48,6 +49,8 @@ CFLAGS += -Wswitch-default
 CFLAGS += -Wswitch-enum
 CFLAGS += -Wunreachable-code
 CFLAGS += -Wunused
+
+CFLAGS += -DNNB_LOGLVL_VERBOSE
 
 # All project headers should be located here
 # PROJ_HEADERS := ..\..\headers

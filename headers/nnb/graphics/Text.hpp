@@ -71,7 +71,7 @@ namespace nnb {
 		SDL_Renderer *tgt;
 		SDL_Rect dst;
 		SDL_Color clr;
-		bool dirty = true;
+		bool dirty = false;
 
 		std::unique_ptr<SDL_Texture, nnb::SDLDeleter> txtTexture;
 

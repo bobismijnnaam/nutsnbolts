@@ -30,6 +30,7 @@ namespace nnb {
 	std::string tos(float p);
 	int stoi(std::string p);
 	float stof(std::string p);
+	long stol(std::string p);
 
 }
 

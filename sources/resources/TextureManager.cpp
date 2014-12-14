@@ -35,6 +35,11 @@ bool nnb::TextureManager::loadGroup(std::string group) {
 	std::string groupPath = rootPath + "/" + group;
 	bool retVal = true;
 
+	if (textures.find(group) != end(textures)) {
+		NNB_INFO << "Double loading of group \"" << group << "\" was requested" ;
+		return false;
+	}
+
 	for (std::string suffix : suffices) {
 		std::vector<std::string> files = getFiles(groupPath, suffix);
 
@@ -62,9 +67,15 @@ void nnb::TextureManager::unloadGroup(std::string group) {
 		NNB_LOG << "Error! Unable to find group \"" << group << "\"";
 	} else {
 		auto groupMap = groupIt->second;
+		/*
 		for (auto pair : groupMap) {
 			SDL_DestroyTexture(pair.second);
 			groupMap.erase(pair.first);
+		}
+		*/
+		for (auto it = begin(groupMap); it != end(groupMap);) {
+			SDL_DestroyTexture(it->second);
+			it = groupMap.erase(it);
 		}
 
 		textures.erase(groupIt);

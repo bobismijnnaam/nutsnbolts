@@ -59,3 +59,16 @@ with autoCommit instead of autoCommit_. Yup, seriously.
 20141206:
 Added a VAlign property to nnb::Text, and changed Align to HAlign (along with
 the enum). Added lots of todo's. Ludum Dare 31!
+
+20141208:
+Fixed an iterating/erasing bug which was strangely not a problem on my laptop
+but was on my desktop. Lel
+
+20141211:
+Fixed some nnb::Text warnings. Found maybe a bug in sdl2!
+
+20141214:
+Made sure chopleft/chopRight would return the input if the chopping point was
+not found. Added nnb::stol() (string to long). Gave nnb::getFiles a default
+suffix argument of "". Also, removed the default suffix argument. Added it,
+works now.

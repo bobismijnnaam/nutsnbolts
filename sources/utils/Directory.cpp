@@ -23,7 +23,7 @@ namespace nnb {
 		if ((dir = opendir(tgtDir.c_str())) != NULL) {
 			while ((ent = readdir(dir)) != NULL) {
 				std::string dirStr{ent->d_name};
-				if (nnb::endsWith(dirStr, suffix))  {
+				if (nnb::endsWith(dirStr, suffix) || suffix.empty())  {
 					dirs.push_back(dirStr);
 				}
 			}
@@ -32,6 +32,38 @@ namespace nnb {
 		} else {
 			NNB_LOG << "Error opening directory: \"" << tgtDir << "\"";
 			return {};
+		}
+	}
+
+	bool exists(std::string path) {
+		auto folder = folderFromPath(path);
+		auto file = fileFromPath(path);
+		auto files = getFiles(folder);
+		
+		for (auto f : files) {
+			if (f == file) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	std::string folderFromPath(std::string path) {
+		std::vector<std::string> result;
+			
+		if (nnb::contains(path, "\\")) {
+			result = nnb::chopRight(path, "\\");
+		} else if (nnb::contains(path, "/")) {
+			result = nnb::chopRight(path, "/");
+		} else {
+			return "";
+		}
+
+		if (result.size() > 0) {
+			return result[0];
+		} else {
+			return "";
 		}
 	}
 
@@ -49,7 +81,7 @@ namespace nnb {
 		if (result.size() > 0) {
 			return result[result.size() - 1];
 		} else {
-			return {};
+			return "";
 		}
 	}
 

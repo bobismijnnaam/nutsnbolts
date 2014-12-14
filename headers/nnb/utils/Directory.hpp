@@ -14,7 +14,9 @@
 
 namespace nnb {
 
-	std::vector<std::string> getFiles(std::string tgtDir, std::string suffix); 
+	std::vector<std::string> getFiles(std::string tgtDir, std::string suffix = ""); 
+	bool exists(std::string path);
+	std::string folderFromPath(std::string path);
 	std::string fileFromPath(std::string path);
 
 }
