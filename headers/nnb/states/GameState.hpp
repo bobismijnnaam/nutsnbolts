@@ -25,7 +25,7 @@ namespace nnb {
 	>
 	class GameState : public State {
 	public:
-		GameState(std::string id) : State(id) {}
+		GameState() : State(T::id) {}
 		virtual ~GameState() {}; 
 
 		/**

@@ -18,7 +18,7 @@ namespace nnb {
 
 	class ExitState : public GameState<ExitState> {
 	public:
-		ExitState() : GameState(id) {}
+		ExitState() {}
 		~ExitState() {
 			NNB_LOG << "SHUTTING_DOWN.jpg";
 		}

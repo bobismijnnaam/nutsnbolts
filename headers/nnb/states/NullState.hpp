@@ -17,7 +17,7 @@ namespace nnb {
 
 	class NullState : public nnb::GameState<NullState> {
 	public:
-		NullState() : GameState(id) {}
+		NullState() {}
 		~NullState() {}
 
 		void update() {

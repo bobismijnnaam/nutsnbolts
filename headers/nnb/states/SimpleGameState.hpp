@@ -21,7 +21,7 @@ namespace nnb {
 	>
 	class SimpleGameState : public GameState<T> {
 	public:
-		SimpleGameState(std::string id) : GameState<T>(id) {}
+		SimpleGameState() : GameState<T>() {}
 		virtual ~SimpleGameState() {}; 
 
 		virtual void update() override {
