@@ -67,12 +67,6 @@ void nnb::TextureManager::unloadGroup(std::string group) {
 		NNB_LOG << "Error! Unable to find group \"" << group << "\"";
 	} else {
 		auto groupMap = groupIt->second;
-		/*
-		for (auto pair : groupMap) {
-			SDL_DestroyTexture(pair.second);
-			groupMap.erase(pair.first);
-		}
-		*/
 		for (auto it = begin(groupMap); it != end(groupMap);) {
 			SDL_DestroyTexture(it->second);
 			it = groupMap.erase(it);

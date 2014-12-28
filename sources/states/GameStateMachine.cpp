@@ -1,4 +1,4 @@
-// File: StateMachine.cpp
+// File: GameStateMachine.cpp
 // Author: Bob Rubbens - Knights of the Compiler 
 // Creation date: ma 20-01-2014 
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
@@ -7,47 +7,35 @@
 #include <utility>
 #include <iterator>
 #include <SDL2/SDL.h>
+#include <string>
 
 // Private
-#include "nnb/states/StateMachine.hpp" 
+#include "nnb/states/GameStateMachine.hpp" 
 #include "nnb/states/State.hpp"
 #include "nnb/log/log.hpp"
 #include "nnb/states/NullState.hpp"
 #include "nnb/states/ExitState.hpp"
 
-const std::string nnb::StateMachine::STATE_NONE = "__NO_CLASS_SELECTED__";
-const std::string nnb::StateMachine::STATE_NULL = "__NULL__";
-const std::string nnb::StateMachine::STATE_EXIT = "__EXIT__";
-
-nnb::StateMachine::StateMachine() :
-	states(),
-	stateStack() {
-
-	addState<nnb::NullState>(nnb::StateMachine::STATE_NULL);
-	addState<nnb::ExitState>(nnb::StateMachine::STATE_EXIT);
-
-	changeState(nnb::StateAction::SET, nnb::StateMachine::STATE_NULL);
+nnb::GameStateMachine::GameStateMachine() :
+stateStack() {
+	changeState(nnb::StateAction::SET, nnb::GameStateMachine::STATE_NULL);
 	update();
 }
 
-nnb::StateMachine::~StateMachine() {
+nnb::GameStateMachine::~GameStateMachine() {
 	// Delete all current queued states
 	emptyStateStack();
-
-	// Delete state factory instances
-	for (auto it = states.begin(); it != states.end(); it++) {
-		delete it->second;
-	}
 }
 
-void nnb::StateMachine::update() {
+void nnb::GameStateMachine::update() {
 	switch (action) {
 		case nnb::StateAction::NONE:
 			break;
 		case nnb::StateAction::SET:
 			{
 				emptyStateStack();
-				State* newState = states[target]->get();
+				State* newState = GameStatePark::get(target);
+				newState->machine = this;
 				stateStack.push(newState);
 
 				NNB_LOG << "Set state " << target;
@@ -55,7 +43,8 @@ void nnb::StateMachine::update() {
 			}
 		case nnb::StateAction::PUSH:
 			{	
-				State* newState = states[target]->get();
+				State* newState = GameStatePark::get(target);
+				newState->machine = this;
 				State* topState = stateStack.top();
 
 				topState->deactivate();
@@ -66,7 +55,6 @@ void nnb::StateMachine::update() {
 			}
 		case nnb::StateAction::POP:
 			{
-
 				State* oldTopState = stateStack.top();
 				std::string oldTopStateName = oldTopState->getID();
 				delete oldTopState;
@@ -83,6 +71,7 @@ void nnb::StateMachine::update() {
 				break;
 			}
 		default:
+			NNB_ERROR << "The universe just exploded";
 			break;
 	}
 
@@ -91,43 +80,45 @@ void nnb::StateMachine::update() {
 
 	if (stateStack.empty()) {
 		// Pushes the exit state when the stack is empty
-		stateStack.push(states[nnb::StateMachine::STATE_EXIT]->get());
+		stateStack.push(GameStatePark::get(GameStateMachine::STATE_EXIT));
 	} else {
 		State* currentState = stateStack.top();
 		currentState->update();
 	}
 }
 
-void nnb::StateMachine::addState(nnb::AbstractStateFactory* fact) {
-	states[fact->getID()] = fact;
-
-	NNB_LOG << "GameState registered: " << fact->getID();
+void nnb::GameStateMachine::setState(std::string stateID) {
+	changeState(nnb::StateAction::SET, stateID);
 }
 
-void nnb::StateMachine::changeState(StateAction inputAction) {
-	changeState(inputAction, STATE_NONE);
+void nnb::GameStateMachine::pushState(std::string stateID) {
+	changeState(nnb::StateAction::PUSH, stateID);
 }
 
-void nnb::StateMachine::changeState(nnb::StateAction inputAction, std::string inputTarget) {
+void nnb::GameStateMachine::popState() {
+	changeState(nnb::StateAction::POP, STATE_NONE);
+}
+
+void nnb::GameStateMachine::changeState(nnb::StateAction inputAction, std::string inputTarget) {
 	action = inputAction;
 	target = inputTarget;
 
 	NNB_LOG << "Next state: " << inputTarget << ", action: " << nnb::stateActionToString(inputAction);
 }
 
-void nnb::StateMachine::exit() {
-	changeState(nnb::StateAction::SET, nnb::StateMachine::STATE_EXIT);
+void nnb::GameStateMachine::exit() {
+	changeState(nnb::StateAction::SET, nnb::GameStateMachine::STATE_EXIT);
 }
 
-std::string nnb::StateMachine::getCurrentStateID() {
+std::string nnb::GameStateMachine::getCurrentStateID() {
 	if (stateStack.empty()) {
-		return nnb::StateMachine::STATE_NONE;
+		return nnb::GameStateMachine::STATE_NONE;
 	} else {
 		return stateStack.top()->getID();
 	}
 }
 
-void nnb::StateMachine::emptyStateStack() {
+void nnb::GameStateMachine::emptyStateStack() {
 	while(!stateStack.empty()) {
 		State* topState = stateStack.top();
 		stateStack.pop();
@@ -147,6 +138,6 @@ std::string nnb::stateActionToString(nnb::StateAction a) {
 		case nnb::StateAction::NONE:
 			return "NONE";
 		default:
-			return "";
+			return "NONE";
 	}
 }

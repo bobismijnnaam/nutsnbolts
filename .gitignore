@@ -6,3 +6,4 @@ bin/
 graph.png
 .tup/
 .junk
+*.pyc

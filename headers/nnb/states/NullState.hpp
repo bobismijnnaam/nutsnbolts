@@ -7,15 +7,17 @@
 #define NNB_NULLSTATE_HPP
 
 // Public
+#include <string>
 
 // Private
-#include "StateMachine.hpp"
+#include "GameState.hpp"
+#include "GameStateMachine.hpp"
 
 namespace nnb {
 
-	class NullState : public nnb::State {
+	class NullState : public nnb::GameState<NullState> {
 	public:
-		NullState() {}
+		NullState() : GameState(id) {}
 		~NullState() {}
 
 		void update() {
@@ -29,6 +31,8 @@ namespace nnb {
 		void deactivate() {
 
 		}
+
+		constexpr static auto id = GameStateMachine::STATE_NULL;
 
 	private:
 

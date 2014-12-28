@@ -10,6 +10,7 @@
 #include "SDL2/SDL.h"
 
 // Private
+#include "nnb/states/GameStateMachine.hpp"
 
 namespace nnb {
 

@@ -7,17 +7,18 @@
 #define NNB_EXITSTATE_HPP
 
 // Public
+#include <string>
 
 // Private
-#include "StateMachine.hpp"
-#include "State.hpp"
+#include "GameState.hpp"
+#include "GameStateMachine.hpp"
 #include "nnb/log/log.hpp"
 
 namespace nnb {
 
-	class ExitState : public State {
+	class ExitState : public GameState<ExitState> {
 	public:
-		ExitState() {}
+		ExitState() : GameState(id) {}
 		~ExitState() {
 			NNB_LOG << "SHUTTING_DOWN.jpg";
 		}
@@ -33,6 +34,8 @@ namespace nnb {
 		void deactivate() {
 
 		}
+
+		constexpr static auto id = nnb::GameStateMachine::STATE_EXIT;
 
 	private:
 

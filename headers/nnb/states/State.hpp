@@ -1,6 +1,6 @@
 // File: State.hpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: ma 20-01-2014
+// Creation date: 26-12-2014
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 #ifndef NNB_STATE_HPP
@@ -8,44 +8,36 @@
 
 // Public
 #include <string>
-#include <SDL2/SDL.h>
 
 // Private
+#include "GameStateMachine.hpp"
 
 namespace nnb {
 
+	class GameStateMachine;
+
 	class State {
 	public:
-		State();
-		virtual ~State();
+		State(std::string id_) : stateID{id_} {}
+		virtual ~State() {};
 
-		/**
-		 * Does the logic of that state
-		 */
-		virtual void update();
+		virtual void update() = 0;
+		virtual void activate() = 0;
+		virtual void deactivate() = 0;
 
-		/**
-		 * Is called to notify the instance it will be used again
-		 */
-		virtual void activate();
+		std::string getID() {
+			return stateID;
+		}
 
-		/**
-		 * Is called to notify the instance that from that moment on it will be paused
-		 */
-		virtual void deactivate();
-
-		/**
-		 * Returns the ID of the state. 
-		 */
-		std::string getID();
-		
-		void setID(std::string id_);
+		nnb::GameStateMachine *machine = nullptr;
 
 	private:
-		std::string id;
+		std::string stateID;
+		
 
-	};
+	} ;
 
 }
 
 #endif
+

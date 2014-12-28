@@ -1,4 +1,4 @@
-// File: StateMachine.hpp
+// File: GameStateMachine.hpp
 // Author: Bob Rubbens - Knights of the Compiler
 // Creation date: ma 20-01-2014
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
@@ -13,7 +13,6 @@
 
 // Private
 #include "State.hpp"
-#include "StateFactory.hpp"
 
 namespace nnb {
 
@@ -26,32 +25,28 @@ namespace nnb {
 
 	std::string stateActionToString(StateAction a);
 
-	class StateMachine {
+	class State;
+
+	class GameStateMachine {
 	public:
-		StateMachine();
-		~StateMachine();
+		GameStateMachine();
+		~GameStateMachine();
 
 		void update();
-		void changeState(StateAction inputAction, std::string inputTarget);
-		void changeState(StateAction inputAction);
+		void setState(std::string stateID);
+		void pushState(std::string stateID);
+		void popState();
 		void exit();
 		std::string getCurrentStateID();
 
-		void addState(nnb::AbstractStateFactory* fact);
-		
-		template<class T>
-		void addState(std::string id) {
-			addState(new SimpleStateFactory<T>(id));
-		}
-
-		static const std::string STATE_NONE;
-		static const std::string STATE_NULL;
-		static const std::string STATE_EXIT;
+		static constexpr auto STATE_NONE = "__NO_CLASS_SELECTED__";
+		static constexpr auto STATE_NULL = "__NULL__";
+		static constexpr auto STATE_EXIT = "__EXIT__";
 
 	private:
 		void emptyStateStack();
+		void changeState(StateAction inputAction, std::string inputTarget);
 
-		std::unordered_map<std::string, nnb::AbstractStateFactory*> states;
 		std::stack<State*> stateStack;
 
 		StateAction action = StateAction::NONE;

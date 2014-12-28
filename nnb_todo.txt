@@ -1,44 +1,33 @@
 + StateMachine
-	+ Rename to GameState machine (it's not really a state machine! every
-		state goes to every state you know.)
-	+ make state/gamestate distinction less hacky
-		+ This will probably be solved by renaming it to gamestate machine.
-			Then only having a gamestate class (as in, not having a state
-			class) is just fine.
-		+ DO THIS
-	+ fixed/variable timestep variations
-	+ move out code from several premade states (exit, null state) to .cpp
-		files from hpp files
-	+ GM should have a stateStarted method()
-	+ GM should catch quit event from SDL
+	+ fixed timestep variations
+	+ SimpleGameState (or any other non-nnb::GameState class) should catch quit event from SDL
 + testing!
 	+ catch framework
-+ PersistentText, PersistentTexture
+	+ Especially game state machine, lol
++ Text, TextureContainer
 	+ Nadenken over clone method, die compleet individuele kopie maakt met
 	zelfde settings enzo
-+ Pack .hpp files into hpp file per module (I have a script for this iirc,
-	check cbt)
 + Change all file description dates to YYYY-MM-DD. Done at some places but not
 all.
 + Make cbt able to add gamestates!
-+ Make 32-bit C(++) program that generates packed headers. ******Or compile to 32bit
-python executable. Jup, I need a 32-bit version of Python 3.3*****FOR THE
-RECORD THE PYTHON THING DOESNT WORK dammit. Just use updated tup!
-+ Owning texture container (just a std::unique_ptr typedef?)
-+ Give nnb::Text an imitate() function to copy all settings from another
-+ nnb::Text alignment with float instead of enum!
-+ Make nnb::GameState capture SDL_Quit events
++ Owning texture container (just a std::unique_ptr typedef?). 
+	+ Do we really need this?
++ Give nnb::Text an imitate()/shallowclone() function to copy all settings from another
+	+ But with his own texture ofcourse
 + Renderstack, keeps track of rendertargets and can push/pop rendertargets
+	+ Not sure if this is needed
 + What if an object that is initialized using an initializer list needs a
 texture loaded in the constructor. When the object is initialized the texture
 group is not yet loaded!
 	+ Oplossing: Wanneer een afbeelding van een groep voor het eerst geladen wordt, rest van
 	groep ook laden
+	+ probably won't be a problem if you have inbetween loading screens. Not
+	that my loader supports that.
 + nnb::intersectOrWithin voor rects (!SDL_IntersectRect(&world, &bulletShape,
 			&interRect) && SDL_RectEmpty(&interRect)))
-+ Command line window is stuck ;_;
-+ DOUBLE CHECK ALL THE MANAGERS FOR ITERATING AND ERASING AND STUFF
 + A class which can be a member on top of another class which loads texture
 groups and stuff
-	+ Or integrate into gamestate?
+	+ Can be a useful alternative if you don't want to load everything upfront
+	or don't want to have inbetween loading screens. Is probably nice to have for
+	jams and stuff
 + Make nnb::chopLeft return tuples (right also)
