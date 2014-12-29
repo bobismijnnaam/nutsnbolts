@@ -36,6 +36,8 @@ namespace nnb {
 	public:
 		Text();
 		Text(SDL_Renderer* tgt_, bool autoCommit_ = true);
+		Text(const Text& other);
+        Text& operator=(const Text& rhs);
 
 		void setText(std::string text_);
 		void setFont(TTF_Font *font_);

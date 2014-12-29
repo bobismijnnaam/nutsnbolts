@@ -9,14 +9,15 @@
 // Public
 #include <string>
 #include <vector>
+#include <tuple>
 
 // Private
 
 namespace nnb {
 
 	std::vector<std::string> split(std::string input, std::string delimiter);
-	std::vector<std::string> chopLeft(std::string input, std::string delimiter);
-	std::vector<std::string> chopRight(std::string input, std::string delimiter);
+	std::tuple<std::string, std::string> chopLeft(std::string input, std::string delimiter);
+	std::tuple<std::string, std::string> chopRight(std::string input, std::string delimiter);
 
 	bool endsWith(std::string input, std::string suffix);
 	bool beginsWith(std::string input, std::string prefix);

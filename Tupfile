@@ -6,3 +6,8 @@
 include_rules
 
 : sources/<modules> |> ^ Creating static library Nuts 'n Bolts^ ar -rvsc %o %<modules>  |> bin/libnutsnbolts.a <nnb>
+
+TESTFLAGS += -L bin
+TESTFLAGS += -lnutsnbolts
+
+: sources/<tests> | bin/libnutsnbolts.a |> ^ Creating unit test program^ $(CC) %<tests> -o %O $(TESTFLAGS) |> bin/tests.exe

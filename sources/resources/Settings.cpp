@@ -71,14 +71,14 @@ bool nnb::Settings::import(std::string db_) {
 	while(std::getline(file, line)) {
 		if (!nnb::beginsWith(line, "//")) {
 			if (nnb::contains(line, "=")) {
-				std::vector<std::string> pair = nnb::chopLeft(line, "=");
-				pair[0] = nnb::trim(pair[0]);
-				pair[1] = nnb::trim(pair[1]);
+				std::tuple<std::string, std::string> pair = nnb::chopLeft(line, "=");
+				std::get<0>(pair) = nnb::trim(std::get<0>(pair));
+				std::get<1>(pair) = nnb::trim(std::get<1>(pair));
 
-				if (dict.find(pair[0]) == dict.end()) {
-					dict[pair[0]] = pair[1];
+				if (dict.find(std::get<0>(pair)) == dict.end()) {
+					dict[std::get<0>(pair)] = std::get<1>(pair);
 				} else {
-					NNB_ERROR << "Detected key \"" << pair[0] << "\" double on line " << linenum << " in settings file \"" << db_ << "\"";
+					NNB_ERROR << "Detected key \"" << std::get<0>(pair) << "\" double on line " << linenum << " in settings file \"" << db_ << "\"";
 				}
 			}
 		}

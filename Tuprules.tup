@@ -51,6 +51,7 @@ CFLAGS += -Wunreachable-code
 CFLAGS += -Wunused
 
 CFLAGS += -DNNB_LOGLVL_VERBOSE
+CFLAGS += -DUSE_CPP11=YES
 
 # All project headers should be located here
 # PROJ_HEADERS := ..\..\headers
@@ -58,9 +59,12 @@ CFLAGS += -DNNB_LOGLVL_VERBOSE
 
 # All include search directories
 INCLUDE_DIRS += -I $(TUP_CWD)\headers
+INCLUDE_DIRS += -isystem $(TUP_CWD)\include
 
 # To convert *.cpp -> *.o
 !cc = |> ^ Compiling %d/%f^ $(CC) $(INCLUDE_DIRS) $(LIB_DIRS) $(CFLAGS) $(LIBS) -c %f -o %o |> ../../build/%d-%B.o ../<modules>
+
+!cctest = |> ^ Compiling %d/%f^ $(CC) $(INCLUDE_DIRS) $(LIB_DIRS) $(CFLAGS) $(LIBS) -c %f -o %o |> ../../build/%d-%B.o ../<tests>
 
 # To convert all *.o -> one big *.o
 !lnk = |> ^ Linking %d^ ld -r %f -o %o |> ../build/%d.o ../<modules>

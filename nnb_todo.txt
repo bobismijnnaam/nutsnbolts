@@ -4,30 +4,10 @@
 + testing!
 	+ catch framework
 	+ Especially game state machine, lol
-+ Text, TextureContainer
-	+ Nadenken over clone method, die compleet individuele kopie maakt met
-	zelfde settings enzo
++ TextureContainer
+	+ Assignment/Copy constructors
 + Change all file description dates to YYYY-MM-DD. Done at some places but not
 all.
 + Make cbt able to add gamestates!
 + Owning texture container (just a std::unique_ptr typedef?). 
 	+ Do we really need this?
-+ Give nnb::Text an imitate()/shallowclone() function to copy all settings from another
-	+ But with his own texture ofcourse
-+ Renderstack, keeps track of rendertargets and can push/pop rendertargets
-	+ Not sure if this is needed
-+ What if an object that is initialized using an initializer list needs a
-texture loaded in the constructor. When the object is initialized the texture
-group is not yet loaded!
-	+ Oplossing: Wanneer een afbeelding van een groep voor het eerst geladen wordt, rest van
-	groep ook laden
-	+ probably won't be a problem if you have inbetween loading screens. Not
-	that my loader supports that.
-+ nnb::intersectOrWithin voor rects (!SDL_IntersectRect(&world, &bulletShape,
-			&interRect) && SDL_RectEmpty(&interRect)))
-+ A class which can be a member on top of another class which loads texture
-groups and stuff
-	+ Can be a useful alternative if you don't want to load everything upfront
-	or don't want to have inbetween loading screens. Is probably nice to have for
-	jams and stuff
-+ Make nnb::chopLeft return tuples (right also)

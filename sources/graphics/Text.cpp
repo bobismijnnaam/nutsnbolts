@@ -22,6 +22,48 @@ dst{0, 0, 0, 0},
 clr{0, 0, 0, 255} {
 }
 
+nnb::Text::Text(const nnb::Text& other) :
+autoCommit{other.autoCommit},
+x{other.x},
+y{other.y},
+font{other.font},
+text{other.text},
+halign{other.halign},
+valign{other.valign},
+txt{other.txt},
+tgt{other.tgt},
+dst{other.dst.x, other.dst.y, other.dst.w, other.dst.h}, 
+clr{other.clr.r, other.clr.g, other.clr.b, other.clr.a},
+dirty{other.dirty} {
+	txt.setTexture(tgt, nullptr);
+	dirty = true;
+	commit();
+}
+
+nnb::Text& nnb::Text::operator=(const nnb::Text& rhs) {
+	if (this != &rhs) {
+		autoCommit = rhs.autoCommit;
+		x = rhs.x;
+		y = rhs.y;
+		font = rhs.font;
+		text = rhs.text;
+		halign = rhs.halign;
+		valign = rhs.valign;
+		txt = rhs.txt;
+		tgt = rhs.tgt;
+		dst = rhs.dst;
+		clr = rhs.clr;
+		dirty = rhs.dirty;
+
+		txtTexture.reset(nullptr);
+		txt.setTexture(tgt, nullptr);
+		dirty = true;
+		commit();
+	}
+
+	return *this;
+}
+
 void nnb::Text::setText(std::string text_) {
 	text = text_;
 	dirty = true;
@@ -147,7 +189,9 @@ void nnb::Text::commit() {
 }
 
 void nnb::Text::render() const {
-	if (dirty) NNB_WARNING << "Warning! Dirty render should not happen, commit() beforehand";
+	if (dirty) {
+		NNB_WARNING << "Warning! Dirty render should not happen, commit() beforehand";
+	}
 	txt.render();
 }
 

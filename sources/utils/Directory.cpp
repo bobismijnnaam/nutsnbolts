@@ -50,7 +50,7 @@ namespace nnb {
 	}
 
 	std::string folderFromPath(std::string path) {
-		std::vector<std::string> result;
+		std::tuple<std::string, std::string> result;
 			
 		if (nnb::contains(path, "\\")) {
 			result = nnb::chopRight(path, "\\");
@@ -60,11 +60,7 @@ namespace nnb {
 			return "";
 		}
 
-		if (result.size() > 0) {
-			return result[0];
-		} else {
-			return "";
-		}
+		return std::get<0>(result);
 	}
 
 	std::string fileFromPath(std::string path) {

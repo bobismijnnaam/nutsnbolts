@@ -96,4 +96,17 @@ accessed by nnb::SimpleGameState with this-> because of templating, lol.
 Added a build.bat which also aggregates the header in inbetween headers so you
 don't have to include everything explicitly. Now you can just say #include
 "nnb.hpp" to include everything, or for example #include "nnb/graphics.hpp" to
-include the graphics module.
+include the graphics module. nnb::GameState now infers (by T::id) the state
+id, so you don't have to pass it to the constructor. Less typing, yay! Added a
+nnb::TextureGroup class, which basically (given a nnb::TextureManager and a
+groupname) loads a group upon construction and unloads it upon deconstruction.
+Pretty useless but during LD31 I needed a quick hack like that so if I need it
+next time it's there. Also started on nnb::Text copy/assignment constructors
+(don't forget this!).
+
+20141229:
+Working right now on those constructors. Aaaaaaand I think they're finished
+now. nnb::chopLeft and nnb::chopRight now return 2 dimension std::string
+tuples! Hurray c++11. Integrated Catch testing framework, now everytime you
+compile a tests.exe is also compiled which can be run to check for errors. It
+also caused a bug to be found in nnb::chopRight :p.

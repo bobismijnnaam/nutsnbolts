@@ -30,24 +30,24 @@ namespace nnb {
 		return result;
 	}
 
-	std::vector<std::string> chopLeft(std::string input, std::string delimiter) {
-		int pos = input.find(delimiter);
-		if (pos == std::string::npos) return {input};
+	std::tuple<std::string, std::string> chopLeft(std::string input, std::string delimiter) {
+		size_t const pos = input.find(delimiter);
+		if (pos == std::string::npos) return std::make_tuple(input, "");
 
 		std::string left = input.substr(0, pos);
 		std::string right = input.substr(pos + 1, input.size());
 		
-		return {left, right};
+		return std::make_tuple(left, right);
 	}
 
-	std::vector<std::string> chopRight(std::string input, std::string delimiter) {
-		int pos = input.rfind(delimiter);
-		if (pos == std::string::npos) return {input};
+	std::tuple<std::string, std::string> chopRight(std::string input, std::string delimiter) {
+		size_t const pos = input.rfind(delimiter);
+		if (pos == std::string::npos) return std::make_tuple("", input);
 
 		std::string left = input.substr(0, pos);
-		std::string right = input.substr(pos, input.size());
+		std::string right = input.substr(pos + 1, input.size());
 		
-		return {left, right};
+		return std::make_tuple(left, right);
 	}
 
 	bool endsWith(std::string input, std::string suffix) {
@@ -87,7 +87,7 @@ namespace nnb {
 			return false;
 		}
 
-		for (int i = 0; i < prefix.size(); ++i) {
+		for (size_t i = 0; i < prefix.size(); ++i) {
 			if (prefix[i] != input[i]) {
 				return false;
 			}
@@ -105,7 +105,7 @@ namespace nnb {
 	}
 
 	std::string trimLeft(std::string input) {
-		int left = input.find_first_not_of(" \n\r\t");
+		size_t const left = input.find_first_not_of(" \n\r\t");
 
 		if (left == std::string::npos) {
 			return "";
@@ -115,7 +115,7 @@ namespace nnb {
 	}
 
 	std::string trimRight(std::string input) {
-		int right = input.find_last_not_of(" \n\r\t");
+		size_t const right = input.find_last_not_of(" \n\r\t");
 		
 		if (right == std::string::npos) {
 			return "";

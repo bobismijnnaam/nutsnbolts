@@ -68,6 +68,8 @@ flags = [
 '-I',
 'headers',
 '-isystem',
+'include',
+'-isystem',
 'c:/mingw/lib/gcc/mingw32/4.8.1/include/c++',
 '-isystem',
 'c:/mingw/lib/gcc/mingw32/4.8.1/include/c++/mingw32',

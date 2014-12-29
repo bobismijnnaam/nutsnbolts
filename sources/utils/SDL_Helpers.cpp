@@ -27,7 +27,7 @@ SDL_Color nnb::getSDL_Color(Color clr) {
 		case Color::BLACK:
 			return {0, 0, 0, 255};
 		default:
-			NNB_LOG << "ERROR! Either a color is not yet defined or some crazy bug is crawling around";
+			NNB_ERROR << "ERROR! Either a color is not yet defined or some crazy bug is crawling around";
 			return {0, 0, 0, 0};
 	}
 }
