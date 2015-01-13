@@ -12,14 +12,20 @@
 #include "nnb/states/State.hpp"
 #include "nnb/log/log.hpp"
 
-std::unordered_map<std::string, std::function<nnb::State*(void)>> nnb::GameStatePark::park;
-
 nnb::State* nnb::GameStatePark::get(std::string stateID) {
-	auto e = nnb::GameStatePark::park.find(stateID);
-	if (e != end(nnb::GameStatePark::park)) {
+	auto park = nnb::GameStatePark::getPark();
+	auto e = park.find(stateID);
+	if (e != end(park)) {
 		return e->second();
 	} else { 
 		NNB_ERROR << "State not found: \"" << stateID << "\"";
 		return nullptr;
 	}
 }
+
+std::unordered_map<std::string, std::function<nnb::State*(void)>>& nnb::GameStatePark::getPark() {
+	static std::unordered_map<std::string, std::function<State*(void)>> thePark;
+
+	return thePark; 
+}
+

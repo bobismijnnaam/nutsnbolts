@@ -32,9 +32,10 @@ namespace nnb {
 			class T
 		>
 		static void record() {
-			auto e = nnb::GameStatePark::park.find(T::id);
-			if (e == end(nnb::GameStatePark::park)) {
-				nnb::GameStatePark::park[T::id] = makeState<T>;
+			auto& park = nnb::GameStatePark::getPark();
+			auto e = park.find(T::id);
+			if (e == end(park)) {
+				park[T::id] = makeState<T>;
 				NNB_INFO << "Sucessfully added state \"" << T::id << "\"";
 			} else {
 				NNB_ERROR << "Duplicate ID found: \"" << T::id << "\", did not add it to collection";
@@ -44,8 +45,7 @@ namespace nnb {
 		static nnb::State* get(std::string stateID);
 
 	private:
-		// static std::unordered_map<std::string, std::unique_ptr<AbstractStateFactory>> park;
-		static std::unordered_map<std::string, std::function<State*(void)>> park;
+		static std::unordered_map<std::string, std::function<State*(void)>>& getPark();
 
 	} ;
 
