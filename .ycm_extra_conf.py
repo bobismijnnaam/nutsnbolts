@@ -70,19 +70,20 @@ flags = [
 '-isystem',
 'include',
 '-isystem',
-'c:/mingw/lib/gcc/mingw32/4.8.1/include/c++',
+'c:/mingw/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.2/include',
 '-isystem',
-'c:/mingw/lib/gcc/mingw32/4.8.1/include/c++/mingw32',
+'c:/mingw/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.2/include-fixed',
 '-isystem',
-'c:/mingw/lib/gcc/mingw32/4.8.1/include/c++/backward',
+'c:/mingw/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.2/../../../../i686-w64-minw32/include',
 '-isystem',
-'c:/mingw/lib/gcc/mingw32/4.8.1/include',
+'c:/mingw/mingw32/lib/gcc/../../i686-w64-mingw32/include/c++',
 '-isystem',
-'c:/mingw/lib/gcc/mingw32/4.8.1/../../../../include',
+'c:/mingw/mingw32/lib/gcc/../../i686-w64-mingw32/include/c++/i686-w64-mingw32',
 '-isystem',
-'c:/mingw/lib/gcc/mingw32/4.8.1/include-fixed',
+'c:/mingw/mingw32/lib/gcc/../../i686-w64-mingw32/include/c++/backward',
 '-isystem',
-'c:/mingw/lib/gcc/mingw32/4.8.1/../../../../mingw32/include'
+'c:/mingw/mingw32/include',
+'-DNNB_LOGLVL_VERBOSE'
 ]
 
 

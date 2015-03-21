@@ -1,8 +1,0 @@
-# File: StandardTupfile
-# Author: Bob Rubbens - Knights of the Compiler
-# Creation date: 2014-12-29 
-# Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
-
-include_rules
-
-:foreach *.cpp |> !cctest |>

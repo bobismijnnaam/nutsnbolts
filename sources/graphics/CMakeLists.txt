@@ -1,0 +1,6 @@
+set(SOURCES
+	${SOURCES}
+	${CMAKE_CURRENT_SOURCE_DIR}/Text.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/TextureContainer.cpp
+	PARENT_SCOPE
+)

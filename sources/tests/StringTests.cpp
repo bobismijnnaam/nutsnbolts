@@ -18,9 +18,6 @@ TEST_CASE("String functions", "[string]") {
 	left = std::make_tuple("Pack", "my box with five dozen liquor jugs.");
 	right = std::make_tuple("Pack my box with five dozen liquor", "jugs.");
 
-	auto otherR = nnb::chopRight(example, " ");
-	NNB_INFO << std::get<0>(otherR) << "|" << std::get<1>(otherR);
-
 	REQUIRE(left == nnb::chopLeft(example, " "));
 	REQUIRE(right == nnb::chopRight(example, " "));
 

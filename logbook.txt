@@ -110,3 +110,9 @@ now. nnb::chopLeft and nnb::chopRight now return 2 dimension std::string
 tuples! Hurray c++11. Integrated Catch testing framework, now everytime you
 compile a tests.exe is also compiled which can be run to check for errors. It
 also caused a bug to be found in nnb::chopRight :p.
+
+20150321:
+Let's try porting this thing to cmake. Well, that took a few hours. About 7, I
+think. Now for some cleanup. Done. Should I commit this? Hmmm. Ohwait, let's
+fix testing first. Testing works, and cleaned away all the tupfiles. Time to
+commit!

@@ -49,6 +49,7 @@ bool nnb::TextureManager::loadGroup(std::string group) {
 				
 				if (loadedFile == NULL) {
 					NNB_LOG << "Error! Unable to load file: \"" << tgtFile << "\"";
+					NNB_LOG << "Error: \"" << IMG_GetError() << "\"";
 					retVal = false;
 				} else {
 					textures[group][file] = loadedFile;
