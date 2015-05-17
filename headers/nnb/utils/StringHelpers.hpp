@@ -33,6 +33,8 @@ namespace nnb {
 	float stof(std::string p);
 	long stol(std::string p);
 
+	std::vector<std::string> readLines(std::string file);
+
 }
 
 #endif

@@ -1,118 +1,144 @@
-20141016:
-Worked a bit on GameFrame.hpp, the thing that initializes subsystems.
+20141016: Worked a bit on GameFrame.hpp, the thing that initializes subsystems.
 
-20141024:
-Finished GameFrame.hpp. Tinkered a bit with log.hpp. Settled on ERROR, DEBUG,
-WARNING, INFO, TRACE logging calls. Also added a NullBuffer and Nullstream
-class, acts like /dev/null. Don't instantiate them, just use the global
-nullstream instance. Also added an exit() function to the statemachine,
+20141024: Finished GameFrame.hpp. Tinkered a bit with log.hpp. Settled on
+ERROR, DEBUG, WARNING, INFO, TRACE logging calls. Also added a NullBuffer and
+Nullstream class, acts like /dev/null. Don't instantiate them, just use the
+global nullstream instance. Also added an exit() function to the statemachine,
 manually changing to the exit state is a lot of typework.
 
-20141025:
-Worked on Settings.hpp. Edited logger to use a conditional instead of a null
-device. That way the compiler will optimize the debug loggings away.
+20141025: Worked on Settings.hpp. Edited logger to use a conditional instead of
+a null device. That way the compiler will optimize the debug loggings away.
 
-20141026:
-Added a function chopLeft(). Haven't worked on it yet. Scratch that, just
-finished chopLeft() and chopRight(). They just break a string in two. Added
-stringhelpersfuncs toInt, toFloat and toString. And removed them, seems that
-they are in the stl since C++11! Seems that Settings.hpp is finished. Removed
-the possibility to set settings, since it might (not) preserve markup of the
-file. And the getInt, getFloat functions use exceptions! stoi not supported by
-32bit MinGW??? Unbelievable. Fuck this, I'm writing my own str <-> float,int
-functions!!!!!!111! Done. And Settings.hpp now also works, after fixing a
-dealbreaking bug. I really should do some testing and documentation soon.
-Altough documentation doesn't really matter since I don't have any
+20141026: Added a function chopLeft(). Haven't worked on it yet. Scratch that,
+just finished chopLeft() and chopRight(). They just break a string in two.
+Added stringhelpersfuncs toInt, toFloat and toString. And removed them, seems
+that they are in the stl since C++11! Seems that Settings.hpp is finished.
+Removed the possibility to set settings, since it might (not) preserve markup
+of the file. And the getInt, getFloat functions use exceptions! stoi not
+supported by 32bit MinGW??? Unbelievable. Fuck this, I'm writing my own str <->
+float,int functions!!!!!!111! Done. And Settings.hpp now also works, after
+fixing a dealbreaking bug. I really should do some testing and documentation
+soon.  Altough documentation doesn't really matter since I don't have any
 autocomplete in here. Testing is important though.
 
-20141031:
-Updated todolist. Updated it some more. Changed a lot of dates to YYYY-MM-DD.
-This should be default everywhere. Tried to get CombineHeadersIntoParent.py to
-work for all header modules. Tup is still whining about 64-bit executables.
-Have to try of cmd.exe can start in 32-bit mode.
+20141031: Updated todolist. Updated it some more. Changed a lot of dates to
+YYYY-MM-DD.  This should be default everywhere. Tried to get
+CombineHeadersIntoParent.py to work for all header modules. Tup is still
+whining about 64-bit executables.  Have to try of cmd.exe can start in 32-bit
+mode.
 
-20141106:
-Made PersistentTexture use a unique_ptr for storing the texture (since it is
-the owner and previously it just left a dangling pointer behind). Next up:
-refactoring the names of PersistentText and PersistentTexture!
+20141106: Made PersistentTexture use a unique_ptr for storing the texture
+(since it is the owner and previously it just left a dangling pointer behind).
+Next up: refactoring the names of PersistentText and PersistentTexture!
 
-20141106:
-Refactored PersistentTexture into TextureContainer, and PersistentText into
-Text.
+20141106: Refactored PersistentTexture into TextureContainer, and
+PersistentText into Text.
 
-20141128:
-Added a rather useless clone function to TextureContainer. (assignment
-operator just copies anyway so it's really useless). Also changed PointInRect
-to pointInRect.
+20141128: Added a rather useless clone function to TextureContainer.
+(assignment operator just copies anyway so it's really useless). Also changed
+PointInRect to pointInRect.
 
-20141201:
-Seems that I forgot that nnb::FontManager::getText() returned a unique_ptr to
-a Text instance. Which is weird, a Text instance containing a unique ptr to a
-SDL_Texture or something is way more elegant and clear. Refactoring now. And
-apparently I had the SDL_Texture in a unique_ptr, PLUS I deleted it in the
-destructor. Hurray for painfully defensive coding ;_; So yeah.
-nnb::FontManager::getText() now returns a nnb::Text, which is kinda different
-because it is not a smart pointer any longer but actually CONTAINS one. Yes.
-AND: I fixed a major bug in nnb::Text, variable autoCommit was initialized
-with autoCommit instead of autoCommit_. Yup, seriously.
+20141201: Seems that I forgot that nnb::FontManager::getText() returned a
+unique_ptr to a Text instance. Which is weird, a Text instance containing a
+unique ptr to a SDL_Texture or something is way more elegant and clear.
+Refactoring now. And apparently I had the SDL_Texture in a unique_ptr, PLUS I
+deleted it in the destructor. Hurray for painfully defensive coding ;_; So
+yeah.  nnb::FontManager::getText() now returns a nnb::Text, which is kinda
+different because it is not a smart pointer any longer but actually CONTAINS
+one. Yes.  AND: I fixed a major bug in nnb::Text, variable autoCommit was
+initialized with autoCommit instead of autoCommit_. Yup, seriously.
 
-20141206:
-Added a VAlign property to nnb::Text, and changed Align to HAlign (along with
-the enum). Added lots of todo's. Ludum Dare 31!
+20141206: Added a VAlign property to nnb::Text, and changed Align to HAlign
+(along with the enum). Added lots of todo's. Ludum Dare 31!
 
-20141208:
-Fixed an iterating/erasing bug which was strangely not a problem on my laptop
-but was on my desktop. Lel
+20141208: Fixed an iterating/erasing bug which was strangely not a problem on
+my laptop but was on my desktop. Lel
 
-20141211:
-Fixed some nnb::Text warnings. Found maybe a bug in sdl2!
+20141211: Fixed some nnb::Text warnings. Found maybe a bug in sdl2!
 
-20141214:
-Made sure chopleft/chopRight would return the input if the chopping point was
-not found. Added nnb::stol() (string to long). Gave nnb::getFiles a default
-suffix argument of "". Also, removed the default suffix argument. Added it,
-works now.
+20141214: Made sure chopleft/chopRight would return the input if the chopping
+point was not found. Added nnb::stol() (string to long). Gave nnb::getFiles a
+default suffix argument of "". Also, removed the default suffix argument. Added
+it, works now.
 
-20141222:
-Wanted to work on GameStates but stopped mid-air (GameStateFactory etc.).
+20141222: Wanted to work on GameStates but stopped mid-air (GameStateFactory
+etc.).
 
-20141228:
-Finished rewriting nnb::GameStateMachine! Very very abstract state class is now
-nnb::State. This is basically for internal use. The class to use for the
-client is nnb::GameState. You basically inherit from that class, pass the
-current class as template parameter, give the class a constexpr static auto
+20141228: Finished rewriting nnb::GameStateMachine! Very very abstract state
+class is now nnb::State. This is basically for internal use. The class to use
+for the client is nnb::GameState. You basically inherit from that class, pass
+the current class as template parameter, give the class a constexpr static auto
 id = "GameStateIDHere" public member, and pass that to the GameState
-constructor. The class self registers with templating magic ( :D ) and you can
+constructor.  The class self registers with templating magic ( :D ) and you can
 start using it by just calling
 nnb::GameStateMachine::setState("GameStateIDHere"). It's a bit more typing but
 it saves the hassle of having to add it manually. I also added a
 SimpleGameState class which is basically a basic event - logic - render loop
 without a fps lock. It basically runs as fast as possible and passes the
-deltatime to logic. I should also make a fixed timestep one with a event - logic
-- render*(times needed to fill 1000/60 ms), but that's something for later.
- nnb::SimpleGameState now catches SDL_QUIT events. nnb::State has a
-nnb::GameStateMachine* machine field to track his parent. Which can be
-accessed by nnb::SimpleGameState with this-> because of templating, lol.
-Added a build.bat which also aggregates the header in inbetween headers so you
-don't have to include everything explicitly. Now you can just say #include
-"nnb.hpp" to include everything, or for example #include "nnb/graphics.hpp" to
-include the graphics module. nnb::GameState now infers (by T::id) the state
-id, so you don't have to pass it to the constructor. Less typing, yay! Added a
+deltatime to logic. I should also make a fixed timestep one with a event -
+logic - render*(times needed to fill 1000/60 ms), but that's something for
+later. nnb::SimpleGameState now catches SDL_QUIT events. nnb::State has a
+nnb::GameStateMachine* machine field to track his parent. Which can be accessed
+by nnb::SimpleGameState with this-> because of templating, lol.  Added a
+build.bat which also aggregates the header in inbetween headers so you don't
+have to include everything explicitly. Now you can just say #include "nnb.hpp"
+to include everything, or for example #include "nnb/graphics.hpp" to include
+the graphics module. nnb::GameState now infers (by T::id) the state id, so you
+don't have to pass it to the constructor. Less typing, yay! Added a
 nnb::TextureGroup class, which basically (given a nnb::TextureManager and a
 groupname) loads a group upon construction and unloads it upon deconstruction.
 Pretty useless but during LD31 I needed a quick hack like that so if I need it
 next time it's there. Also started on nnb::Text copy/assignment constructors
 (don't forget this!).
 
-20141229:
-Working right now on those constructors. Aaaaaaand I think they're finished
-now. nnb::chopLeft and nnb::chopRight now return 2 dimension std::string
-tuples! Hurray c++11. Integrated Catch testing framework, now everytime you
-compile a tests.exe is also compiled which can be run to check for errors. It
-also caused a bug to be found in nnb::chopRight :p.
+20141229: Working right now on those constructors. Aaaaaaand I think they're
+finished now. nnb::chopLeft and nnb::chopRight now return 2 dimension
+std::string tuples! Hurray c++11. Integrated Catch testing framework, now
+everytime you compile a tests.exe is also compiled which can be run to check
+for errors. It also caused a bug to be found in nnb::chopRight :p.
 
-20150321:
-Let's try porting this thing to cmake. Well, that took a few hours. About 7, I
-think. Now for some cleanup. Done. Should I commit this? Hmmm. Ohwait, let's
-fix testing first. Testing works, and cleaned away all the tupfiles. Time to
-commit!
+20150321: Let's try porting this thing to cmake. Well, that took a few hours.
+About 7, I think. Now for some cleanup. Done. Should I commit this? Hmmm.
+Ohwait, let's fix testing first. Testing works, and cleaned away all the
+tupfiles. Time to commit!
+
+20150322: Added some general functionality (getX, getY, etc.) to
+nnb::TextureContainer.  Fixed a bug in nnb::TextureContainer that caused alpha
+to be shared between nnb::TextureContainers with the same base texture. Added
+nnb::readLines() to StringHelpers.hpp. Seriously, MAKE nnb::Text CLONABLE.
+
+20150514: Hahahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ahahahah uesterday there was a
+bellettrie thing hueeeheueeee why IS THIS HAPPENING whahaaaaaa bellettrie test
+drum and bass it dshould continue here hahaha Well, I guess it works. Wordwrap
+ftw!
+
+20150515: Time to think some about the gamestate stuff. Started with a
+harness, no implementation yet.
+
+20150516: Okay, the gamestatemachine got a lot simpler. You just say
+GameStateMachine::setNextState(new YourGameState()) and the machine runs your
+state when you call update(). The idea is that if you want transitions, you
+call the next state function something like this:
+GameStateMachine::setNextState(new
+RegularTransition(GameStateMachine::getCurrentState(), new NextState())). That
+way transitions, loading assets, etc. is all done without the GameStateMachine
+knowing about it, which makes it modular and extendable I guess. Way better
+than before in any case. The only thing I'm unhappy about is how to exit -
+right now the GameStateMachine has a static variable called "exit" which you
+could use to signal that the game has to stop - a bit hacky, but it's a nice
+default solution. Slowly the realization that I just broke 3 or 4 games by
+removing the default game state machine is starting to seep through. Now it
+just needs some transition classes and stuff. Time to update the todo list.
+Added a RenderStack class, on which you can push/pop render targets. It's a
+singleton! Turns out nnb::Text already has copy/assignment constructors! If I
+knew that before... Lol. Gave nnb::TextureContainer default copy, assignment,
+move constructors.
+
+20150517: Added some license files (for SDL2 (is this one needed?), Catch, and
+randutils. There are also random facilities now! Just include
+utils/Random.hpp, and use the nnb::rng instance. This is ofcourse just an
+instance if randutils::mt_19937 class, defined by the awesome randutils
+library. It is thread safe since each thread has it's own instance! Removed
+all the special constructors AND the destructor from nnb::TextureContainer.
+All the special constructors should be defined by default, and it doesn't need
+the destructor anyways.

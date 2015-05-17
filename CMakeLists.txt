@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 project(nutsnbolts)
 
-add_definitions(-std=c++11 -g)
+add_definitions(-std=c++11 -g -mwindows)
 include_directories(SYSTEM "c:/mingw/mingw32/include")
 include_directories("${PROJECT_SOURCE_DIR}/headers")
 include_directories("${PROJECT_SOURCE_DIR}/include")

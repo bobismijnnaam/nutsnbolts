@@ -18,7 +18,13 @@ namespace nnb {
 	public:
 		TextureContainer();
 		TextureContainer(SDL_Renderer* tgt_, SDL_Texture* txt_);
-		~TextureContainer();
+
+		/* All constructors should be defined by default!
+		 *TextureContainer(TextureContainer const &) = default;
+		 *TextureContainer& operator=(TextureContainer const &) = default;
+		 *TextureContainer& operator=(TextureContainer&&) = default;
+		 *TextureContainer(TextureContainer&&) = default;
+		 */
 
 		void setSrcRect(SDL_Rect newRect);
 		void setRotation(double newAngle);
@@ -54,6 +60,9 @@ namespace nnb {
 		int getTextureWidth() const;
 		int getTextureHeight() const;
 		Uint32 getFormat() const;
+		double getRotation() const;
+		int getX() const;
+		int getY() const;
 		SDL_Rect getBounds() const;
 		void render() const;
 

@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 // Private
 #include "nnb/utils/StringHelpers.hpp"
@@ -159,5 +160,18 @@ namespace nnb {
 		ss >> l;
 		return l;
 	}
+
+	std::vector<std::string> readLines(std::string file) {
+		std::ifstream infile(file);
+		std::string line;
+		std::vector<std::string> lines;
+
+		while(std::getline(infile, line)) {
+			lines.push_back(line);
+		}
+
+		return lines;
+	}
+	
 
 }

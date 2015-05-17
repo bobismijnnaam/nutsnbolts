@@ -1,6 +1,6 @@
 // File: Text.hpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: ma 21-07-2014
+// Creation date: 2014-07-21
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 #ifndef NNB_TEXT_HPP
@@ -19,7 +19,6 @@
 
 namespace nnb {
 	
-	// TODO: Change H/VAlign to percentages instead of three possibilities
 	enum class HAlign {
 		LEFT,
 		CENTER,

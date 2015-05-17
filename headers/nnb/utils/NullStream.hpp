@@ -1,6 +1,6 @@
 // File: NullStream.hpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: fr 24-10-2014
+// Creation date: 2014-10-24
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 #ifndef NNB_NULLSTREAM_HPP

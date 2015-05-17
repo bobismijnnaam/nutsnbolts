@@ -43,10 +43,6 @@ format{0} {
 
 }
 
-nnb::TextureContainer::~TextureContainer() {
-	// RAII should take care of this. Also we're not the owner of the texture
-}
-
 void nnb::TextureContainer::setSrcRect(SDL_Rect newRect) {
 	src = newRect;
 }
@@ -75,7 +71,6 @@ void nnb::TextureContainer::setFlip(SDL_RendererFlip newFlip) {
 
 void nnb::TextureContainer::setAlpha(Uint8 newAlpha) {
 	alpha = newAlpha;
-	SDL_SetTextureAlphaMod(txt, alpha);
 }
 
 void nnb::TextureContainer::setBlendMode(SDL_BlendMode newBlendMode) {
@@ -87,7 +82,6 @@ void nnb::TextureContainer::setColor(Uint8 r, Uint8 g, Uint8 b) {
 	clr.r = r;
 	clr.g = g;
 	clr.b = b;
-	SDL_SetTextureColorMod(txt, clr.r, clr.g, clr.b);
 }
 
 void nnb::TextureContainer::setColor(nnb::Color clr_) {
@@ -195,6 +189,18 @@ Uint32 nnb::TextureContainer::getFormat() const {
 	return format;
 }
 
+double nnb::TextureContainer::getRotation() const {
+	return angle;
+}
+
+int nnb::TextureContainer::getX() const {
+	return dst.x;
+}
+
+int nnb::TextureContainer::getY() const {
+	return dst.y;
+}
+
 SDL_Rect nnb::TextureContainer::getBounds() const {
 	return dst;
 }
@@ -205,6 +211,9 @@ void nnb::TextureContainer::render() const {
 	SDL_Rect tdst = dst;
 	tdst.x -= origin.x;
 	tdst.y -= origin.y;
+
+	SDL_SetTextureAlphaMod(txt, alpha);
+	SDL_SetTextureColorMod(txt, clr.r, clr.g, clr.b);
 
 	int err = SDL_RenderCopyEx(tgt, txt, &src, &tdst, angle, &center, flip);
 	if (err != 0) {

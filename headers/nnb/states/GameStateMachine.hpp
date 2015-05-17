@@ -1,60 +1,34 @@
 // File: GameStateMachine.hpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: ma 20-01-2014
+// Creation date: 2015-05-15
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
-#ifndef NNB_STATEMACHINE_HPP
-#define NNB_STATEMACHINE_HPP
+#ifndef NNB_GAMESTATEMACHINE_HPP
+#define NNB_GAMESTATEMACHINE_HPP
 
 // Public
-#include <unordered_map>
-#include <stack>
-#include <string>
 
 // Private
-#include "State.hpp"
+#include "nnb/states/GameState.hpp"
 
 namespace nnb {
-
-	enum class StateAction {
-		SET,
-		PUSH,
-		POP,
-		NONE
-	} ;
-
-	std::string stateActionToString(StateAction a);
-
-	class State;
-
 	class GameStateMachine {
 	public:
-		GameStateMachine();
-		~GameStateMachine();
+		GameStateMachine(GameState *state_ = nullptr);
 
 		void update();
-		void setState(std::string stateID);
-		void pushState(std::string stateID);
-		void popState();
-		void exit();
-		std::string getCurrentStateID();
+		void setNextState(GameState *state_, bool deleteState_ = true);
+		void switchStates();
 
-		static constexpr auto STATE_NONE = "__NO_CLASS_SELECTED__";
-		static constexpr auto STATE_NULL = "__NULL__";
-		static constexpr auto STATE_EXIT = "__EXIT__";
+		GameState *getCurrentState();
+
+		static bool exit;
 
 	private:
-		void emptyStateStack();
-		void changeState(StateAction inputAction, std::string inputTarget);
+		GameState *state, *nextState = nullptr;
+		bool deleteState = true;
 
-		std::stack<State*> stateStack;
-
-		StateAction action = StateAction::NONE;
-		std::string target = STATE_NONE;
-
-		bool quit = false;
 	} ;
-
 }
 
-#endif
+#endif // NNB_GAMESTATEMACHINE_HPP

@@ -1,13 +1,24 @@
-+ StateMachine
-	+ fixed timestep variations
-	+ SimpleGameState (or any other non-nnb::GameState class) should catch quit event from SDL
 + testing!
 	+ catch framework
 	+ Especially game state machine, lol
-+ TextureContainer
-	+ Assignment/Copy constructors
 + Change all file description dates to YYYY-MM-DD. Done at some places but not
 all.
-+ Make cbt able to add gamestates!
-+ Owning texture container (just a std::unique_ptr typedef?). 
-	+ Do we really need this?
++ Random facilities
+	+ thread safe/unsafe flavours
++ Something that allows resolution-independent development
+	+ Likely together with ECS?
++ Debug facilities for standard structures (sdl_point, vector, etc)
++ ECS
++ Make nnb::Text
+	+ Add multiline support (should just work by doing nnb::Text::enableMultiline(true)
++ Make nnb::getFiles() accept no file extension, and a list of extension (varargs?)
+	+ Add a newline in the error debug output of nnb::getFiles()
++ Custom cursor sdl wrapper
++ I don't like the subsystems class or something. Seems way to weird and
+overengineered.
++ StateMachine
+	+ Some default transitions, and some default loading screens
++ Make a class that loads a standard JSON at runtime, from which you can
+extract values like g_vars.int("varname"), or g_vars.str("varname") or
+something
++ Make CMake gobble up all the headers 'n stuff
