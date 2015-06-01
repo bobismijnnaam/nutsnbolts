@@ -5,9 +5,9 @@
 
 // Public
 #include <memory>
-#include "nnb/utils/unique_ptr.hpp"
 
 // Private
+#include "nnb/utils/unique_ptr.hpp"
 #include "nnb/graphics/Text.hpp"
 
 nnb::Text::Text() : Text(NULL, true) {}

@@ -1,6 +1,6 @@
 // File: Directions.hpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: za 26-07-2014
+// Creation date: 2014-07-26
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 #ifndef NNB_DIRECTIONS_HPP
@@ -33,4 +33,4 @@ namespace nnb {
 
 }
 
-#endif
+#endif // NNB_DIRECTIONS_HPP

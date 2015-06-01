@@ -9,29 +9,19 @@
 #include "nnb/states/GameStateMachine.hpp"
 
 namespace nnb {
-	bool GameStateMachine::exit = false;
-
-	GameStateMachine::GameStateMachine(GameState *state_) :
-	state{state_} {}
+	GameStateMachine::GameStateMachine(std::shared_ptr<GameState> state_) :
+	state(state_) {}
 
 	void GameStateMachine::update() {
 		state->update();
 	}
 
-	void GameStateMachine::setNextState(GameState *state_, bool deleteState_) {
+	void GameStateMachine::setState(std::shared_ptr<GameState> state_) {
 		nextState = state_;
-		deleteState = deleteState_;
 	}
 
 	void GameStateMachine::switchStates() {
-		if (deleteState)
-			delete state;
-
 		state = nextState;
 		nextState = nullptr;
-	}
-
-	GameState *GameStateMachine::getCurrentState() {
-		return state;
 	}
 }

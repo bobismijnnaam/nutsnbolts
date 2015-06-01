@@ -1,4 +1,5 @@
-20141016: Worked a bit on GameFrame.hpp, the thing that initializes subsystems.
+20141016: Worked a bit on GameFrame.hpp, the thing that initializes
+subsystems.
 
 20141024: Finished GameFrame.hpp. Tinkered a bit with log.hpp. Settled on
 ERROR, DEBUG, WARNING, INFO, TRACE logging calls. Also added a NullBuffer and
@@ -6,8 +7,8 @@ Nullstream class, acts like /dev/null. Don't instantiate them, just use the
 global nullstream instance. Also added an exit() function to the statemachine,
 manually changing to the exit state is a lot of typework.
 
-20141025: Worked on Settings.hpp. Edited logger to use a conditional instead of
-a null device. That way the compiler will optimize the debug loggings away.
+20141025: Worked on Settings.hpp. Edited logger to use a conditional instead
+of a null device. That way the compiler will optimize the debug loggings away.
 
 20141026: Added a function chopLeft(). Haven't worked on it yet. Scratch that,
 just finished chopLeft() and chopRight(). They just break a string in two.
@@ -15,8 +16,8 @@ Added stringhelpersfuncs toInt, toFloat and toString. And removed them, seems
 that they are in the stl since C++11! Seems that Settings.hpp is finished.
 Removed the possibility to set settings, since it might (not) preserve markup
 of the file. And the getInt, getFloat functions use exceptions! stoi not
-supported by 32bit MinGW??? Unbelievable. Fuck this, I'm writing my own str <->
-float,int functions!!!!!!111! Done. And Settings.hpp now also works, after
+supported by 32bit MinGW??? Unbelievable. Fuck this, I'm writing my own str
+<-> float,int functions!!!!!!111! Done. And Settings.hpp now also works, after
 fixing a dealbreaking bug. I really should do some testing and documentation
 soon.  Altough documentation doesn't really matter since I don't have any
 autocomplete in here. Testing is important though.
@@ -58,8 +59,8 @@ my laptop but was on my desktop. Lel
 
 20141214: Made sure chopleft/chopRight would return the input if the chopping
 point was not found. Added nnb::stol() (string to long). Gave nnb::getFiles a
-default suffix argument of "". Also, removed the default suffix argument. Added
-it, works now.
+default suffix argument of "". Also, removed the default suffix argument.
+Added it, works now.
 
 20141222: Wanted to work on GameStates but stopped mid-air (GameStateFactory
 etc.).
@@ -67,10 +68,10 @@ etc.).
 20141228: Finished rewriting nnb::GameStateMachine! Very very abstract state
 class is now nnb::State. This is basically for internal use. The class to use
 for the client is nnb::GameState. You basically inherit from that class, pass
-the current class as template parameter, give the class a constexpr static auto
-id = "GameStateIDHere" public member, and pass that to the GameState
-constructor.  The class self registers with templating magic ( :D ) and you can
-start using it by just calling
+the current class as template parameter, give the class a constexpr static
+auto id = "GameStateIDHere" public member, and pass that to the GameState
+constructor.  The class self registers with templating magic ( :D ) and you
+can start using it by just calling
 nnb::GameStateMachine::setState("GameStateIDHere"). It's a bit more typing but
 it saves the hassle of having to add it manually. I also added a
 SimpleGameState class which is basically a basic event - logic - render loop
@@ -78,13 +79,13 @@ without a fps lock. It basically runs as fast as possible and passes the
 deltatime to logic. I should also make a fixed timestep one with a event -
 logic - render*(times needed to fill 1000/60 ms), but that's something for
 later. nnb::SimpleGameState now catches SDL_QUIT events. nnb::State has a
-nnb::GameStateMachine* machine field to track his parent. Which can be accessed
-by nnb::SimpleGameState with this-> because of templating, lol.  Added a
-build.bat which also aggregates the header in inbetween headers so you don't
-have to include everything explicitly. Now you can just say #include "nnb.hpp"
-to include everything, or for example #include "nnb/graphics.hpp" to include
-the graphics module. nnb::GameState now infers (by T::id) the state id, so you
-don't have to pass it to the constructor. Less typing, yay! Added a
+nnb::GameStateMachine* machine field to track his parent. Which can be
+accessed by nnb::SimpleGameState with this-> because of templating, lol.
+Added a build.bat which also aggregates the header in inbetween headers so you
+don't have to include everything explicitly. Now you can just say #include
+"nnb.hpp" to include everything, or for example #include "nnb/graphics.hpp" to
+include the graphics module. nnb::GameState now infers (by T::id) the state
+id, so you don't have to pass it to the constructor. Less typing, yay! Added a
 nnb::TextureGroup class, which basically (given a nnb::TextureManager and a
 groupname) loads a group upon construction and unloads it upon deconstruction.
 Pretty useless but during LD31 I needed a quick hack like that so if I need it
@@ -142,3 +143,59 @@ library. It is thread safe since each thread has it's own instance! Removed
 all the special constructors AND the destructor from nnb::TextureContainer.
 All the special constructors should be defined by default, and it doesn't need
 the destructor anyways.
+
+20150522: Gonna work some more on the gamestate class. Has the time finally
+come that I will use std::shared_ptr? Also, the gamestate needs to be
+simplified. Why the hierarchy? Also wrote some example usage in the header.
+Wow, nnb::GameStateMachine is becoming quite minimal... Allright, this is the
+bare minimum I think. CoolGameState still has to be refactored (see
+GameState.cpp and GameState.hpp). Finished refactoring. It's much prettier
+this way, and still flexible as before but with less of the hierarchy bloat.
+GameStateMachine should also be finished. I hope I get to use this soon! I
+need to start reading about OpenGL ;_;
+
+20150523: Switching from Eigen to GLM asap, Eigen sucks to use (read it on the
+internet and found out myself). Also, OpenGL shit needs to start rolling.
+Don't want to keep using the SDL2 render api!
+
+20150525: nnb::getFiles works without extension now, and has a newline in the
+error message. If it went right it should also now not output the . and ..
+folder thingies.
+
+20150527: Did some thinking about the subsystems. Check out the nnb::Context
+idea! Be careful that it doesn't become too much of a monster though. E.g.,
+random facilities should probably stay outside of the context.
+
+20150528: It should only take care of stuff that either need to be
+initialized/disposed of or are bound to SDL (and thus need a nice quick api).
+Worked on nnb::Context. Time to implement all those functions and make some
+more variables to keep track of all those init* calls.
+
+20150529: See if I can move over mj3::Image to nnb. Also need to think about
+representing colors in nnb. Continue at Color.hpp pls :) Templates ftw lol.
+Typedefs! Let's work a bit more. I used an assert - IIRC they can be turned
+off at compile time, so I should use them more often. nnb::BasicColor seems
+finished. Worked a bit on refactoring nnb::Image. One thing that should be
+split off into a function is the checking of an intersection of rectangles.
+Also, need to write custom png/jpeg code using libjpg/libpng. Also, turn all
+the funky (unique_)ptr business into references and value returns.
+
+20150530: Maybe use nnb's intrect/floatrect for nnb::Image? Added an
+NNB_UNPACK macro for unpacking tuples (up to eight elements). Worked on the
+intersection rectangle stuff.
+
+20150531: Finished the NNB_UNPACK macro. Worked a bit on the intersect thing.
+Maybe next time implement some unit tests, and continue from there? It kind of
+fits this rectangle thing.
+
+20150601: Gonna work for a bit on the intersect code. Definitely not looking
+forward to honours homework... :s. Maybe finished the intersect method and
+thus the nnb::BasicRect class as a whole. Even added unit tests! Now I just
+need to finish the nnb::Image class and get compiling working again. Hah! Now
+nnb::Color is next (6). It seems to compile! IT HAS BEEN COMPILED!! And it
+even passess all tests. Unbelievable. Maybe I should add some edge cases for
+no intersections. Oh my god, I think I found a bug lol. Nope, I used
+CHECK_FALSE instead of CHECK. Silly me :p. Did implement a toString method as
+a side effect :D. Should do that more. Rects working, now for a quick update
+of Catch.hpp... And now the tuples looks nice too :) Wicked! Now quickly
+commit and push and then, BED!

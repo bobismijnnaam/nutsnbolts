@@ -1,24 +1,55 @@
-+ testing!
-	+ catch framework
+----------------
+-- Short term --
+----------------
+
++ Testing!
 	+ Especially game state machine, lol
 + Change all file description dates to YYYY-MM-DD. Done at some places but not
 all.
-+ Random facilities
-	+ thread safe/unsafe flavours
 + Something that allows resolution-independent development
 	+ Likely together with ECS?
 + Debug facilities for standard structures (sdl_point, vector, etc)
 + ECS
-+ Make nnb::Text
-	+ Add multiline support (should just work by doing nnb::Text::enableMultiline(true)
-+ Make nnb::getFiles() accept no file extension, and a list of extension (varargs?)
-	+ Add a newline in the error debug output of nnb::getFiles()
++ Make nnb::Text support multiline. Should work always (if people want to
+disable it, s/\\n//g
 + Custom cursor sdl wrapper
-+ I don't like the subsystems class or something. Seems way to weird and
-overengineered.
+	+ Maybe use nnb::Image for this?
++ Change the subsystem class to NNBContext. Can also be used to store
+g_window, g_renderer, etc?
+	+ Global g_nnb var supplied 
+	+ window (SDL_Window)
+	+ windowSurface (SDL_Surface)
+	+ renderer (SDL_Renderer)
+	+ gm (nnb::GameStateManager)
+	+ tm (nnb::TextureManager)
+	+ if font subsystem is initialzed, an fm (nnb::FontManager)
+	+ if sound subsystem is initialized, an sm (nnb::SoundManager)
+	+ GL initializement
+	+ [] operator for getting variables
+		+ backed by json
+		+ ex: g_nnb["scrW"].int() should return an int
 + StateMachine
 	+ Some default transitions, and some default loading screens
-+ Make a class that loads a standard JSON at runtime, from which you can
-extract values like g_vars.int("varname"), or g_vars.str("varname") or
-something
 + Make CMake gobble up all the headers 'n stuff
++ A thing to handle fragment/vertex shaders
++ SoundManager! Also in context
++ Change math stuff into glm classes?
++ Think about some common containers
+	+ Templated color class?
+	+ Templated rectangle?
+	+ Conversion from/to SDL/GLM equivalents?
+	+ operator<< or toString methods?
++ Use assert() more often!
++ Own jpeg/png loaders
++ Replace all uses of std::endl with \n. Blasphemy!
++ More toString()/operator<<() methods!
+
+---------------
+-- Long term --
+---------------
+
++ Integrate THE image class
+	+ Refactor it to a nicer/consistent api while you're at it
+		+ Especially the alpha stuff. Brr.
++ Own freetype api
++ Thread safe random facilities

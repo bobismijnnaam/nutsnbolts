@@ -13,32 +13,26 @@
 #include "nnb/states/GameStateMachine.hpp"
 
 namespace nnb {
-	//////////////////////////
-	// GameState base class //
-	//////////////////////////
+	///////////////
+	// GameState //
+	///////////////
 
 	GameState::~GameState() {}
+	void update() {}
+	void enter() {}
+	void leave() {}
+	std::vector<std::string> resources() {return {};}
 
-	////////////////////////
-	// OrganizedGameState //
-	////////////////////////
+	///////////////////
+	// CoolGameState //
+	///////////////////
 
-	OrganizedGameState::OrganizedGameState(int fps_) :
+	CoolGameState::CoolGameState(int fps_) :
 	fps{fps_} {}
 
-	void OrganizedGameState::update() {
+	void CoolGameState::update() {
 		SDL_Event e;
 		while(SDL_PollEvent(&e)) {
-			if (e.type == SDL_QUIT) {
-				GameStateMachine::exit = true;
-			}
-
-			if (e.type == SDL_KEYDOWN) {
-				if (e.key.keysym.sym == SDLK_ESCAPE) {
-					GameStateMachine::exit = true;
-				}
-			}
-
 			event(e);
 		}
 
@@ -54,28 +48,7 @@ namespace nnb {
 		}
 	}
 
-	void OrganizedGameState::event(SDL_Event e) {}
-	void OrganizedGameState::logic(double dt) {}
-	void OrganizedGameState::render() const {}
-
-	//////////////////////
-	// TransitGameState //
-	//////////////////////
-
-	TransitGameState::TransitGameState(int fps_) :
-	OrganizedGameState(fps_) {}
-
-	void TransitGameState::enter() {}
-	void TransitGameState::leave() {}
-
-	///////////////////////
-	// ResourceGameState //
-	///////////////////////
-
-	ResourceGameState::ResourceGameState(int fps_) :
-	TransitGameState(fps_) {}
-
-	std::vector<std::string> resources() {
-		return {};
-	}
+	void CoolGameState::event(SDL_Event e) {}
+	void CoolGameState::logic(double dt) {}
+	void CoolGameState::render() const {}
 }

@@ -14,37 +14,25 @@
 // Private
 
 namespace nnb {
-	class GameState {
-	public:
+	struct GameState {
 		virtual ~GameState();
-		virtual void update() = 0;
+
+		virtual void update();
+		virtual void enter();
+		virtual void leave();
+		virtual std::vector<std::string> resources();
 	} ;
 
-	class OrganizedGameState : public GameState {
-	public:
-		OrganizedGameState(int fps_ = 60);
+	struct CoolGameState : public GameState {
+		CoolGameState(int fps_ = 60);
 
 		void update();
-
 		virtual void event(SDL_Event e);
 		virtual void logic(double dt);
 		virtual void render() const;
 
 		int fps;
 		double lag = 0;
-	} ;
-
-	class TransitGameState : public OrganizedGameState {
-	public:
-		TransitGameState(int fps_);
-		virtual void enter();
-		virtual void leave();
-	} ;
-
-	class ResourceGameState : public TransitGameState {
-	public:
-		ResourceGameState(int fps_);
-		std::vector<std::string> resources();
 	} ;
 }
 

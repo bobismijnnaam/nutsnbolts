@@ -23,14 +23,14 @@ namespace nnb {
 		if ((dir = opendir(tgtDir.c_str())) != NULL) {
 			while ((ent = readdir(dir)) != NULL) {
 				std::string dirStr{ent->d_name};
-				if (nnb::endsWith(dirStr, suffix) || suffix.empty())  {
+				if ((suffix.empty() || nnb::endsWith(dirStr, suffix)) && dirStr != "." && dirStr != "..")   {
 					dirs.push_back(dirStr);
 				}
 			}
 			closedir(dir);
 			return dirs;
 		} else {
-			NNB_LOG << "Error opening directory: \"" << tgtDir << "\"";
+			NNB_LOG << "Error opening directory: \"" << tgtDir << "\"\n";
 			return {};
 		}
 	}
