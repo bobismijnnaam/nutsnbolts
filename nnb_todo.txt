@@ -43,6 +43,8 @@ g_window, g_renderer, etc?
 + Own jpeg/png loaders
 + Replace all uses of std::endl with \n. Blasphemy!
 + More toString()/operator<<() methods!
++ Unit tests for color (clamp et al?)
++ NNB_UNPACK unit tests!
 
 ---------------
 -- Long term --

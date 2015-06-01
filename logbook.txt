@@ -198,4 +198,4 @@ no intersections. Oh my god, I think I found a bug lol. Nope, I used
 CHECK_FALSE instead of CHECK. Silly me :p. Did implement a toString method as
 a side effect :D. Should do that more. Rects working, now for a quick update
 of Catch.hpp... And now the tuples looks nice too :) Wicked! Now quickly
-commit and push and then, BED!
+commit and push and then, BED! Bye bye.
