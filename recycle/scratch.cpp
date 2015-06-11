@@ -21,6 +21,11 @@ int main() {
 
 	NNB_UNPACK(aTuple, theInt, theString, theBool);
 
+	int a;
+	string b;
+	bool c;
+	std::tie(a, b, c) = aTuple;
+
 	std::cout << "The int: " << theInt << "\n";
 	std::cout << "The string: " << theString << "\n";
 	std::cout << "The bool: " << theBool << "\n";

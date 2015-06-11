@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.2)
 project(nutsnbolts)
 
-add_definitions(-std=c++11 -g -mwindows)
+# Makes sure all executables are put in root
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
+
+add_definitions(-std=c++11 -g -mwindows -DNNB_LOGLVL_VERBOSE)
 include_directories(SYSTEM "c:/mingw/mingw32/include")
 include_directories("${PROJECT_SOURCE_DIR}/headers")
 include_directories("${PROJECT_SOURCE_DIR}/include")

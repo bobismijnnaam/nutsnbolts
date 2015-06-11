@@ -1,6 +1,6 @@
 // File: Directory.cpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: su 17-08-2014
+// Creation date: 2014-08-17
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 // Public
@@ -30,14 +30,16 @@ namespace nnb {
 			closedir(dir);
 			return dirs;
 		} else {
-			NNB_LOG << "Error opening directory: \"" << tgtDir << "\"\n";
+			NNB_ERROR << "Error opening directory: \"" << tgtDir << "\"\n";
 			return {};
 		}
 	}
 
 	bool exists(std::string path) {
 		auto folder = folderFromPath(path);
+		if (folder == "") folder = "./";
 		auto file = fileFromPath(path);
+		if (file == "" && folder == "./") file = path;
 		auto files = getFiles(folder);
 		
 		for (auto f : files) {

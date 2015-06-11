@@ -12,6 +12,8 @@
 #include <algorithm>
 
 // Private
+#include "nnb/utils/StringHelpers.hpp"
+#include "nnb/utils/macros.hpp"
 
 namespace nnb {
 	template<
@@ -21,7 +23,6 @@ namespace nnb {
 	>
 	struct BasicColor {
 		// Methods
-
 		BasicColor(std::initializer_list<T> const c) {
 			assert(c.size() == 3 || c.size() == 4);
 
@@ -78,8 +79,22 @@ namespace nnb {
 			return r == c.r && g == c.g && b == c.b && a == c.a;
 		}
 
-		// Members
+		std::string toString() const {
+			std::string result = "Color{";
+			result += nnb::tos(r) + " ";
+			result += nnb::tos(g) + " ";
+			result += nnb::tos(b) + " ";
+			result += nnb::tos(a) + "}";
+			
+			return result;
+		}
 
+		friend std::ostream& operator<< (std::ostream& os, const BasicColor<T, minval, maxval> &c) {
+			os << c.toString(); 
+			return os;
+		}
+
+		// Members
 		T r, g, b, a;
 		
 	} ;

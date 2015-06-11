@@ -199,3 +199,36 @@ CHECK_FALSE instead of CHECK. Silly me :p. Did implement a toString method as
 a side effect :D. Should do that more. Rects working, now for a quick update
 of Catch.hpp... And now the tuples looks nice too :) Wicked! Now quickly
 commit and push and then, BED! Bye bye.
+
+20150603: Added toString/operator<< for nnb::Color. Also removed debug output
+from unit tests.
+
+20150608: Gonna work some on the image intersect stuff. Decided that I
+implement some wrap policies. Will make copying/pasting a bit more resource
+intensive but all the intersecting is just inflexible and difficult to
+implement/maintain. It only has to be implemented in getpixel though.
+Implemented the border one, the other ones will come later!
+
+20150609: Implementing all the paste/copy functions without the intersecting
+stuff. Everything is now getted according to the wrap policy, and out of
+bounds setPixel calls will just be skipped. If you're doing it wrong we don't
+mind but if you want performance your code should be correct :p Finished
+implementing setColor/getColor, and copy/paste functionality. Now, maybe for
+some image loading code? Worked on loadPng function. Broke at something called
+the incomplete type :p
+
+20150610: Fixed the incomplete type thing. Also typed up an initial
+implementation of a png loader and a basic test framework.
+
+20150611: Time to debug that png thingy! Working on exist now as well, it
+seems to be a bit buggy. Will have to write unit tests for that thing
+sometime. Wow, wrote a png reader/writer and a jpeg reader. Maybe tonight even
+a jpeg writer? Unit tests as well, pretty sweet. Jup, jpeg writer as well :)
+They'll probably break in due time but then I'll be smarter, wiser, and I'll
+have plenty of unit tests to quickly find the error. Also fixed the unique_ptr
+business in nnb::Image. Now they're all properly std::move'ing and stack based
+objects. Allocating them on the heap is a bit tedious now (lots of typing),
+but if that ever seems the case I'll add a few helper functions. Wow, actually
+completed 4 minor points on the to-do list today. Ka-ching! Maybe it's time to
+commit again :P Wrote a little specification for nnb::CursorManager (which
+uses nnb::Image! Yay :D)

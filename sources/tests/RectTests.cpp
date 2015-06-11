@@ -18,10 +18,6 @@ TEST_CASE("Rect class and functionality", "[rect]") {
 	nnb::Rect overlap;
 	nnb::Rect result;
 
-	std::stringstream ss;
-	ss << left;
-	std::cout << ss;
-
 	SECTION("Normal use") {
 		right = {50, 50, 150, 150};
 		overlap = {50, 50, 50, 50};

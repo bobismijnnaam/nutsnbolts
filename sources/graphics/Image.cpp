@@ -5,12 +5,17 @@
 
 // Public
 #include <cstring>
+#include <stdio.h>
 
 // Private
 #include "nnb/utils/StringHelpers.hpp"
 #include "nnb/graphics/Image.hpp"
+#include "nnb/utils/ImageLoaders.hpp"
 #include "nnb/graphics/Color.hpp"
 #include "nnb/utils/macros.hpp"
+#include "nnb/utils/Rect.hpp"
+#include "nnb/log/log.hpp"
+#include "nnb/utils/Directory.hpp"
 
 namespace nnb {
 	// Default constructor. Constructs an empty transparent image of 0 pixels
@@ -46,153 +51,112 @@ namespace nnb {
 	w{0},
 	h{0},
 	colorMod{other.colorMod},
-	doColorModulation{other.doColorModulation} {
+	doColorModulation{other.doColorModulation},
+	wrap{other.wrap},
+	border{other.border} {
 		ensureBufferSize(w, h);
 		std::memcpy(img.get(), other.img.get(), w * h * 4);
 	}
 
+	Image& Image::operator=(Image const &other) {
+		colorMod = other.colorMod;
+		doColorModulation = other.doColorModulation;
+		wrap = other.wrap;
+		border = other.border;
+
+		ensureBufferSize(other.w, other.h);
+
+		std::memcpy(img.get(), other.img.get(), w * h * 4);
+
+		return *this;
+	}
+
 	// Helper function to construct an image from a file
-	std::unique_ptr<Image> Image::fromFile(std::string file) {
-		std::unique_ptr<Image> result = std::unique_ptr<Image>(new Image(file));
+	Image Image::fromFile(std::string file) {
+		Image result(file);
 
 		return std::move(result);
 	}
 
-	std::unique_ptr<Image> Image::fromBytesRGB(unsigned char* src, int srcW, int srcH) {
-		std::unique_ptr<Image> img(new Image(srcW, srcH));
-		img->loadBytesRGB(src, srcW, srcH);
+	Image Image::fromBytesRGB(unsigned char* src, int srcW, int srcH) {
+		Image img(srcW, srcH);
+		img.loadBytesRGB(src, srcW, srcH);
 
 		return std::move(img);
 	}
 
-	std::unique_ptr<Image> Image::fromBytesGray(unsigned char* src, int srcW, int srcH) {
-		std::unique_ptr<Image> img(new Image(srcW, srcH));
-		img->loadBytesGray(src, srcW, srcH);
+	Image Image::fromBytesRGBA(unsigned char* src, int srcW, int srcH) {
+		Image img(srcW, srcH);
+		img.loadBytesRGBA(src, srcW, srcH);
+
+		return std::move(img);
+	}
+
+	Image Image::fromBytesGray(unsigned char* src, int srcW, int srcH) {
+		Image img(srcW, srcH);
+		img.loadBytesGray(src, srcW, srcH);
 
 		return std::move(img);
 	}
 
 	// Constructs an image from a png
 	void Image::loadPng(std::string file) {
-		// TODO: Implement this shit
-
-		//// Load the png
-		//png::image<png::rgba_pixel> pngImg(file);
-		
-		//// Only reallocate memory if the current buffer has a different size
-		//if (!(w == (int) pngImg.get_width() && h == (int) pngImg.get_height())) {
-			//w = pngImg.get_width();
-			//h = pngImg.get_height();
-			//img.reset(new unsigned char[w * h * 4]);
-		//}
-
-		//// Copy colors
-		//for (int y = 0; y < h; ++y) {
-			//auto row = pngImg[y];
-			//for (int x = 0; x < w; ++x) {
-				//auto pixel = row[x];
-				//setColor(x, y, {pixel.red, pixel.green, pixel.blue, pixel.alpha});
-			//}
-		//}
-
-		// pngImg is deallocated here
+		int imW = -1, imH = -1;
+		auto imgBuf = readPng(file, &imW, &imH);
+		if (imgBuf.get() != nullptr) {
+			// Success
+			loadBytesRGBA(imgBuf.get(), imW, imH);
+		} else {
+			// Failure
+			NNB_ERROR << "Failed to load png: " << file;
+		}
 	}
 
 	// Constructs an image instance from a jpeg
 	void Image::loadJpeg(std::string file) {
-		// TODO: Implement this
-
-   /*     // Initialize jpeg image*/
-		//JPEGReader jpegImg;
-		//jpegImg.header(file);
-		//jpegImg.setColorSpace(JPEG::ColorSpace::COLOR_RGB);
-
-		//// Prepare jpeg buffer
-		//std::vector<std::unique_ptr<unsigned char>> gc;
-		//auto rowsGC = std::unique_ptr<unsigned char*>(new unsigned char*[jpegImg.height()]);
-		//auto rows = rowsGC.get();
-		//for (size_t y = 0; y < jpegImg.height(); ++y) {
-			//auto row = new unsigned char[jpegImg.width() * jpegImg.components()];
-			//rows[y] = row;
-			//gc.push_back(std::unique_ptr<unsigned char>(row));
-		//}
-		
-		//// Load into buffer
-		//jpegImg.load(rows);
-
-		//// Check if image buffer should be resized
-		//if (!(w == (int) jpegImg.width() && h == (int) jpegImg.height())) {
-			//w = jpegImg.width();
-			//h = jpegImg.height();
-			//img.reset(new unsigned char[w * h * 4]);
-		//}
-
-		//// Copy over 
-		//for (int y = 0; y < h; ++y) {
-			//for (int x = 0; x < w; ++x) {
-				//setColor(x, y, {rows[y][x * 3], rows[y][x * 3 + 1], rows[y][x * 3 + 2], 255});
-			//}
-		//}
-
-		/*// rows/hRows should be automatically cleaned up now*/
+		int imW = -1, imH = -1;
+		auto imgBuf = readJpeg(file, &imW, &imH);
+		if (imgBuf.get() != nullptr) {
+			// Success
+			loadBytesRGBA(imgBuf.get(), imW, imH);
+		} else {
+			// Failure
+			NNB_ERROR << "Failed to load jpeg: " << file;
+		}
 	}
 
 	// Saves the image as a png
-	void Image::savePng(std::string file) {
-		// TODO: Implement this
+	bool Image::savePng(std::string file) {
+		if (!writePng(img.get(), w, h, file)) {
+			NNB_ERROR << "Failed to write png to file: " << file;
+			return false;
+		}
 
-   /*     png::image<png::rgba_pixel> pngImg(w, h);*/
-
-		//for (int y = 0; y < h; ++y) {
-			//auto& row = pngImg[y];
-			//for (int x = 0; x < w; ++x) {
-				//Color c = getColor(x, y);
-				//row[x].red = c.r;
-				//row[x].green = c.g;
-				//row[x].blue = c.b;
-				//row[x].alpha = c.a;
-			//}
-		//}
-
-		/*pngImg.write(file);*/
+		return true;
 	}
 
 	// Saves the image as a jpeg
-	void Image::saveJpeg(std::string file, int quality) {
-		// TODO: Implement this
+	bool Image::saveJpeg(std::string file, int quality) {
+		if (!writeJpeg(img.get(), w, h, file, quality)) {
+			NNB_ERROR << "Failed to write jpeg to file: " << file;
+			return false;
+		}
 
-   /*     // Initializa jpeg writer*/
-		//JPEGWriter jpegImg;
-		//jpegImg.header(w, h, 3, JPEG::COLOR_RGB);
-		//jpegImg.setQuality(quality);
-
-		//// Prepare jpeg buffer
-		//std::vector<std::unique_ptr<unsigned char>> gc;
-		//auto rowsGC = std::unique_ptr<unsigned char*>(new unsigned char*[h]);
-		//auto rows = rowsGC.get();
-		//for (int y = 0; y < h; ++y) {
-			//gc.push_back(std::unique_ptr<unsigned char>(new unsigned char[w * 3]));
-			//rows[y] = gc.back().get();
-		//}
-
-		//// Write to jpeg buffer
-		//for (int y = 0; y < h; ++y) {
-			//auto row = rows[y];
-			//for (int x = 0; x < w; ++x) {
-				//Color c = getColor(x, y);
-				//row[x * 3] = c.r;
-				//row[x * 3 + 1] = c.g;
-				//row[x * 3 + 2] = c.b;
-			//}
-		//}
-
-		//// Write to jpeg file
-		//jpegImg.write(file, rows);
-
-		/*// Buffers should be automatically deallocated here*/
+		return true;
 	}
 
-	// Copies RGB values at full opacity to images
+	// Copies RGBA values to image
+	void Image::loadBytesRGBA(unsigned char* src, int srcW, int srcH) {
+		ensureBufferSize(srcW, srcH);
+
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; ++x) {
+				setColor(x, y, {src[y * w * 4 + x*4], src[y * w * 4 + x * 4 + 1], src[y * w * 4 + x * 4 + 2], src[y * w * 4 + x * 4 + 3]});
+			}
+		}
+	}
+	
+	// Copies RGB values at full opacity to image
 	void Image::loadBytesRGB(unsigned char* src, int srcW, int srcH) {
 		ensureBufferSize(srcW, srcH);
 
@@ -225,7 +189,7 @@ namespace nnb {
 	// Resizes the image to the given resolution
 	void Image::resize(int newW, int newH) {
 		// Acquire buffer of new size
-		auto newImg = std::unique_ptr<unsigned char>(new unsigned char[newW * newH * 4]);
+		auto newImg = std::unique_ptr<unsigned char[]>(new unsigned char[newW * newH * 4]);
 
 		// Copy resized image to new image instance
 		double dx = getWidth() / (double) newW;
@@ -251,12 +215,12 @@ namespace nnb {
 	}
 
 	// Returns a new resized instance of the current image
-	std::unique_ptr<Image> Image::getResized(int newW, int newH) const {
+	Image Image::getResized(int newW, int newH) const {
 		// Acquire new image instance
 		auto newImg = clone();
 
 		// Apply resize
-		newImg->resize(newW, newH);
+		newImg.resize(newW, newH);
 
 		// Return resized instance
 		return std::move(newImg);
@@ -282,32 +246,46 @@ namespace nnb {
 	}
 
 	// Returns a scaled instance of the current image
-	std::unique_ptr<Image> Image::getScaled(float pw, float ph) const {
+	Image Image::getScaled(float pw, float ph) const {
 		auto newImg = clone();
-		newImg->scale(pw, ph);
+		newImg.scale(pw, ph);
 
 		return std::move(newImg);
 	}
 
 	Color Image::getColor(int x, int y) const {
-		if (!doColorModulation) {
-			return {
-				img.get()[y * w * 4 + x * 4],
-				img.get()[y * w * 4 + x * 4 + 1],
-				img.get()[y * w * 4 + x * 4 + 2],
-				img.get()[y * w * 4 + x * 4 + 3],
-			};
+		Color c;
+
+		if (x < 0 || x >= w || y < 0 || y >= h) {
+			switch (wrap) {
+				case PixelWrap::Border:
+					c = border;
+					break;
+				default:
+					NNB_ERROR << "An unimplemented pixel wrap mode was selected";
+			}
 		} else {
-			return {
-				(unsigned char) (img.get()[y * w * 4 + x * 4] / 255.0 * colorMod.r),
-				(unsigned char) (img.get()[y * w * 4 + x * 4 + 1] / 255.0 * colorMod.g),
-				(unsigned char) (img.get()[y * w * 4 + x * 4 + 2] / 255.0 * colorMod.b),
-				(unsigned char) (img.get()[y * w * 4 + x * 4 + 3] / 255.0 * colorMod.a),
-			};
+			c.r = img.get()[y * w * 4 + x * 4];
+			c.g = img.get()[y * w * 4 + x * 4 + 1];
+			c.b = img.get()[y * w * 4 + x * 4 + 2];
+			c.a = img.get()[y * w * 4 + x * 4 + 3];
 		}
+
+		if (doColorModulation) {
+				c.r = (unsigned char) (c.r / 255.0 * colorMod.r);
+				c.g = (unsigned char) (c.g / 255.0 * colorMod.g);
+				c.b = (unsigned char) (c.b / 255.0 * colorMod.b);
+				c.a = (unsigned char) (c.a / 255.0 * colorMod.a);
+		}
+
+		return c;
 	}
 
 	void Image::setColor(int x, int y, Color c) {
+		if (x < 0 || x >= w || y < 0 || y >= h) {
+			return; // Fail silently
+		} 
+
 		img.get()[y * w * 4 + x * 4] = c.r;
 		img.get()[y * w * 4 + x * 4 + 1] = c.g;
 		img.get()[y * w * 4 + x * 4 + 2] = c.b;
@@ -320,21 +298,7 @@ namespace nnb {
 				setColor(x, y, c);
 			}
 		}
-   /*     for (int i = 0; i < w * h; ++i) {*/
-			//img.get()[i * 4] = c.r;
-			//img.get()[i * 4 + 1] = c.g;
-			//img.get()[i * 4 + 2] = c.b;
-			//img.get()
-		/*}*/
 	}
-
-	//void Image::floodFillAlpha(Color c) {
-		//for (int y = 0; y < h; ++y) {
-			//for (int x = 0; x < w; ++x) {
-				//setColor(x, y, c);
-			//}
-		//}
-	//}
 
 	int Image::getWidth() const {
 		return w;
@@ -346,60 +310,23 @@ namespace nnb {
 
 	// Pastes an images disregaring alpha channel, taking into account a given alpha channel
 	void Image::copyImage(int x, int y, Image const * otherImg, unsigned char alpha) {
-		// Check if the image is at least 1 pixel in size
-		if (otherImg->getWidth() <= 0 || otherImg->getHeight() <= 0) {
-			return;
-		}
-
-		// Check if image is not outside of the image
-		if (x >= w || y >= h) {
-			return;
-		}
-
-		// Check if image is not on the... Other outside of the image
-		if (x + otherImg->getWidth() <= 0 || y + otherImg->getHeight() <= 0) {
-			return;
-		}
-		
-		int sy = 0;
-		int sh = otherImg->getHeight();
-		int sx = 0;
-		int sw = otherImg->getWidth();
-
-		// Find out the specific region that needs to be copied, in case it's only a partial paste
-		if (y < 0) {
-			sy = y * -1;
-		}
-
-		if (x < 0) {
-			sx = x * -1;
-		}
-
-		if (x + sw >= w) {
-			sw = w - x;
-		}
-
-		if (y + sh >= h) {
-			sh = h - y;
-		}
-
-		if (alpha == 255) { // If alpha is 255, just copy all the pixels
-			for (int otherY = sy; otherY < sh; ++otherY) {
-				for (int otherX = sx; otherX < sw; ++otherX) {
-					setColor(x + otherX, y + otherY, otherImg->getColor(otherX, otherY));
+		if (alpha == 255) {
+			for (int sy = 0; sy < otherImg->getHeight(); ++sy) {
+				for (int sx = 0; sx < otherImg->getWidth(); ++sx) {
+					setColor(x + sx, y + sy, otherImg->getColor(sx, sy));	
 				}
 			}
-		} else { // If not, blend the pixels with the alpha value
-			for (int otherY = sy; otherY < sh; ++otherY) {
-				for (int otherX = sx; otherX < sw; ++otherX) {
-					Color oc = otherImg->getColor(otherX, otherY);
-					Color c = getColor(x + otherX, y + otherY);
+		} else {
+			for (int sy = 0; sy < otherImg->getHeight(); ++sy) {
+				for (int sx = 0; sx < otherImg->getHeight(); ++sx) {
+					Color oc = otherImg->getColor(sx, sy);
+					Color c = getColor(x + sx, y + sy);
 
 					c.r = (c.r * (255 - alpha) + oc.r * alpha) / 255;
 					c.g = (c.g * (255 - alpha) + oc.g * alpha) / 255;
 					c.b = (c.b * (255 - alpha) + oc.b * alpha) / 255;
 
-					setColor(x + otherX, y + otherY, c);
+					setColor(x + sx, y + sy, c);
 				}
 			}
 		}
@@ -407,47 +334,12 @@ namespace nnb {
 
 	// Pastes an image assuming pre-multiplied alpha is the case
 	void Image::pasteImage(int x, int y, Image const * otherImg) {
-		// TODO: Continue here
-		// See Image::pasteImage for comments on the first few statements
-		if (otherImg->getWidth() <= 0 || otherImg->getHeight() <= 0) {
-			return;
-		}
-
-		if (x >= w || y >= h) {
-			return;
-		}
-
-		if (x + otherImg->getWidth() <= 0 || y + otherImg->getHeight() <= 0) {
-			return;
-		}
-
-		int sy = 0;
-		int sh = otherImg->getHeight();
-		int sx = 0;
-		int sw = otherImg->getWidth();
-
-		if (y < 0) {
-			sy = y * -1;
-		}
-
-		if (x < 0) {
-			sx = x * -1;
-		}
-
-		if (x + sw>= getWidth()) {
-			sw = getWidth() - x;
-		}
-
-		if (y + sh >= getHeight()) {
-			sh = getHeight() - y;
-		}
-
-		for (int otherY = sy; otherY < sh; ++otherY) {
-			for (int otherX = sx; otherX < sw; ++otherX) {
+		for (int sy = 0; sy < otherImg->getHeight(); sy++) {
+			for (int sx = 0; sx < otherImg->getWidth(); sx++) {
 				// First we convert the colors to tints
 				// Which are colors in the range [0,1] instead of [0, 255]
-				Tint ot = toTint(otherImg->getColor(otherX, otherY));
-				Tint t = toTint(getColor(x + otherX, y + otherY));
+				Tint ot = toTint(otherImg->getColor(sx, sy));
+				Tint t = toTint(getColor(x + sx, y + sy));
 
 				// Some awkward alpha blending formulas I found on the interwebs
 				Tint rt;
@@ -471,90 +363,46 @@ namespace nnb {
 					rt.b = 0;
 				}
 
-				setColor(x + otherX, y + otherY, toColor(rt));
+				setColor(x + sx, y + sy, toColor(rt));
 			}
 		}
 	}
 
 	// Creates an entirely separate instance of Image identical to this. It has absolutely NO shared resources! :D
-	std::unique_ptr<Image> Image::clone() const {
+	Image Image::clone() const {
 		// Create new Image instance
-		std::unique_ptr<Image> newImg(new Image(w, h));
+		Image newImg(w, h);
 
 		// Copy raw bytes over
-		std::memcpy(newImg->img.get(), img.get(), w * h * 4);
+		std::memcpy(newImg.img.get(), img.get(), w * h * 4);
 
 		// Copy the rest of the settings
-		newImg->colorMod = colorMod;
-		newImg->doColorModulation = doColorModulation;
+		newImg.colorMod = colorMod;
+		newImg.doColorModulation = doColorModulation;
 
 		return std::move(newImg);
 	}
 
+	// TODO: Optimize the inbetween image away
 	void Image::copyImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const * otherImg) {
-		if (sx + sw < 0 || sx >= otherImg->getWidth()) return;
-		if (sy + sh < 0 || sy >= otherImg->getHeight()) return;
+		Image timg(sw, sh, {0, 0, 0, 0});
 
-		int nsx = sx;
-		int nsw = sw;
-		if (sx < 0) {
-			nsx = 0;
-			nsw = sw - sx;
-		}
-		if (nsx + nsw >= otherImg->getWidth()) {
-			nsw = otherImg->getWidth() - nsx;
-		}
-		
-		int nsy = sy;
-		int nsh = sh;
-		if (sy < 0) {
-			nsy = 0;
-			nsh = sh - sy;
-		}
-		if (nsy + nsh >= otherImg->getHeight()) {
-			nsh = otherImg->getHeight() - nsy;
-		}
-		
-		Image timg(nsw, nsh);
-
-		for (int ty = 0; y < nsh; ++y) {
-			for (int tx = 0; x < nsw; ++x) {
-				timg.setColor(tx, ty, otherImg->getColor(nsx + tx, nsy + ty));
+		for (int ty = 0; ty < sh; ++ty) {
+			for (int tx = 0; tx < sw; ++tx) {
+				timg.setColor(tx, ty, otherImg->getColor(tx + sx, ty + sy));
 			}
 		}
 
 		copyImage(x, y, &timg);
 	}
 
+	// TODO: Optimize the inbetween image away
 	void Image::pasteImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const * otherImg) {
-		if (sx + sw < 0 || sx >= otherImg->getWidth()) return;
-		if (sy + sh < 0 || sy >= otherImg->getHeight()) return;
+		Image timg(sw, sh, {0, 0, 0, 0});
 
-		int nsx = sx;
-		int nsw = sw;
-		if (sx < 0) {
-			nsx = 0;
-			nsw = sw - sx;
-		}
-		if (nsx + nsw >= otherImg->getWidth()) {
-			nsw = otherImg->getWidth() - nsx;
-		}
-		
-		int nsy = sy;
-		int nsh = sh;
-		if (sy < 0) {
-			nsy = 0;
-			nsh = sh - sy;
-		}
-		if (nsy + nsh >= otherImg->getHeight()) {
-			nsh = otherImg->getHeight() - nsy;
-		}
-		
-		Image timg(nsw, nsh, {0, 0, 0, 0});
-
-		for (int ty = 0; ty < nsh; ++ty) {
-			for (int tx = 0; tx < nsw; ++tx) {
-				timg.setColor(tx, ty, otherImg->getColor(nsx + tx, nsy + ty));
+		for (int ty = 0; ty < sh; ++ty) {
+			for (int tx = 0; tx < sw; ++tx) {
+				timg.setColor(tx, ty, otherImg->getColor(tx + sx, ty + sy));
 			}
 		}
 
@@ -568,24 +416,53 @@ namespace nnb {
 		doColorModulation = !(colorMod == Color(255, 255, 255, 255));
 	}
 
-	std::string Image::printColors() {
-		std::string result = "";
-		result += "[";
-		for (int y = 0; y < h; ++y) {
-			for (int x = 0; x < w; ++x) {
-				for (int c = 0; c < 4; ++c) {
-					result += nnb::tos((int) img.get()[y * w * 4 + x * 4 + c]) + " ";
-				}
-				result += " | ";
+	void Image::setWrapMode(PixelWrap wrap_, Color border_) {
+		wrap = wrap_;
+		border = border_;
+
+		// TODO: Implement remaining modes
+		if (wrap != PixelWrap::Border) {
+			switch (wrap) {
+				case PixelWrap::Edge:
+					NNB_ERROR << "WrapMode Edge is not yet implemented";
+					break;
+				case PixelWrap::MirroredRepeat:
+					NNB_ERROR << "WrapMode MirroredRepeat is not yet implemented";
+					break;
+				case PixelWrap::Repeat:
+					NNB_ERROR << "WrapMode Repeat is not yet implemented";
+					break;
+				default:
+					NNB_ERROR << "This switch statement should not be activated";
 			}
 		}
-		result += "]";
-
-		return result;
 	}
 
 	unsigned char* Image::getBuffer() {
 		return img.get();
 	}
+
+	std::string Image::toString() const {
+		std::string result = "";
+		result.reserve(w * h * 4 * 3);
+
+		for (int y = 0; y < h; ++y) {
+			for (int x = 0; x < w; ++x) {
+				Color c = getColor(x, y);
+				result += nnb::tos(c.r) + " " ;
+				result += nnb::tos(c.g) + " " ;
+				result += nnb::tos(c.b) + " " ;
+				result += nnb::tos(c.a) + " " ;
+			}
+		}
+
+		return result;
+	}
+
+	std::ostream& operator<< (std::ostream& os, const Image &i) {
+		os << i.toString(); 
+		return os;
+	}
+
 }
 
