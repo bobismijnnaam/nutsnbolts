@@ -7,3 +7,4 @@ graph.png
 .tup/
 .junk
 *.pyc
+.idea/

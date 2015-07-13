@@ -246,3 +246,6 @@ nnb::Colour should now also have a few constant color instances, red, green,
 etc. Also moved the imageToSDL_Surface function to SDL_Helpers.cpp, to keep
 the nnb::Image nicely decoupled from SDL. Now it only depends in
 libjpeg/libpng and the stl, yay.
+
+20150714: Worked a bit on Directory.cpp and fleshed out the header of nnb::SoundManager. Also moved the default build
+mode to unix (ubuntu?). Should figure out a way to make cmake detect automatically what it should build for.

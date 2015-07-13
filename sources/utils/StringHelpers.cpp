@@ -64,12 +64,11 @@ namespace nnb {
 			return false;
 		}
 		
-		int j = input.size() - 1;
-		for (int i = suffix.size() - 1; i >= 0; --i) {
-			if (suffix[i] != input[j])
-				return false;
-
-			j--;
+		size_t j = input.size() - 1;
+		for (size_t i = suffix.size() - 1; i >= 0; --i, --j) {
+			if (suffix[i] != input[j]) {
+                return false;
+            }
 		}
 
 		return true;

@@ -7,6 +7,7 @@
 #define NNB_TEXTUREGROUP_HPP
 
 // Public
+#include <string>
 
 // Private
 #include "TextureManager.hpp"
@@ -25,4 +26,4 @@ namespace nnb {
 	} ;
 }
 
-#endif
+#endif // NNB_TEXTUREGROUP_HPP
