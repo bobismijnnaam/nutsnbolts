@@ -116,7 +116,10 @@ void nnb::Text::setColor(int r, int g, int b) {
 }
 
 void nnb::Text::setColor(nnb::Color clr_) {
-	clr = nnb::getSDL_Color(clr_);
+	clr.r = clr_.r;
+	clr.g = clr_.g;
+	clr.b = clr_.b;
+	clr.a = clr_.a;
 	dirty = true;
 	if (autoCommit) commit();
 }

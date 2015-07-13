@@ -18,6 +18,7 @@
 // Or wrap, which wraps to the other side if you do getpixel. Should also
 // work for setpixel? Makes all the intersection stuff a lot easier and keeps working
 // when an edge case occurs, but still shows you that something went wrong.
+// TODO: std::optional in here for the load functions!
 
 namespace nnb {
 	enum class PixelWrap {
@@ -36,15 +37,15 @@ namespace nnb {
 		Image& operator=(Image&& other) = default;
 
 		Image(int w_, int h_, Color baseColor = {0, 0, 0, 255});
-		Image(std::string file);
 
 		static Image fromFile(std::string file);
 		static Image fromBytesRGB(unsigned char* src, int srcW, int srcH);
 		static Image fromBytesRGBA(unsigned char* src, int srcW, int srcH);
 		static Image fromBytesGray(unsigned char* src, int srcW, int srcH);
 
-		void loadPng(std::string file);
-		void loadJpeg(std::string file);
+		bool loadPng(std::string file);
+		bool loadJpeg(std::string file);
+		bool loadFile(std::string file);
 		bool savePng(std::string file);
 		bool saveJpeg(std::string file, int quality = 80);
 		void loadBytesRGB(unsigned char* src, int srcW, int srcH);
@@ -62,15 +63,15 @@ namespace nnb {
 		void floodFill(Color c);
 		int getWidth() const;
 		int getHeight() const;
-		void copyImage(int x, int y, Image const * img, unsigned char alpha = 255);
-		void pasteImage(int x, int y, Image const * img);
-		void copyImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const * otherImg);
-		void pasteImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const * otherImg);
+		void copyImage(int x, int y, Image const & img, unsigned char alpha = 255);
+		void pasteImage(int x, int y, Image const & img);
+		void copyImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const & otherImg);
+		void pasteImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const & otherImg);
 		void setModulation(Color colorMod = {255, 255, 255, 255});
 		Image clone() const;
 		void setWrapMode(PixelWrap wrap_, Color border_ = {0, 0, 0, 0});
 
-		unsigned char* getBuffer();
+		unsigned char* getBuffer() const;
 
 		std::string toString() const;
 		friend std::ostream& operator<<(std::ostream& os, const Image &i);

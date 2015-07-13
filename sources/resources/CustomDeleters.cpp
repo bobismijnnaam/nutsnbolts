@@ -19,3 +19,11 @@ void nnb::SDLDeleter::operator()(SDL_Renderer *p) const {
 void nnb::SDLDeleter::operator()(SDL_Texture *p) const {
 	SDL_DestroyTexture(p); 
 }
+
+void nnb::SDLDeleter::operator()(SDL_Cursor *p) const {
+	SDL_FreeCursor(p);
+}
+
+void nnb::SDLDeleter::operator()(SDL_Surface *p) const {
+	SDL_FreeSurface(p);
+}

@@ -12,23 +12,6 @@ all.
 + ECS
 + Make nnb::Text support multiline. Should work always (if people want to
 disable it, s/\\n//g
-+ Custom cursor sdl wrapper
-	+ nnb::CursorManager
-	+ nnb::Image will be used for this
-	+ It will have the following functions
-		+ setSystemCursor(type)
-			+ type should be an enum for all system cursors
-			+ see SDL_CreateSystemCursor()
-			+ should also have a reset value
-			+ default value should be reset
-		+ loadCursor(filename, channel)
-			+ An image will be loaded
-			+ For each pixel, if the given channel is above 128,
-			the pixel is opaque. Otherwise transparent.
-			+ transparancy is taken into account.
-			+ Obviously jpegs are 128% opaque
-		+ loadCursor(nnb::Image, channel)
-			+ same as above, except an already existing
 + Change the subsystem class to NNBContext. Can also be used to store
 g_window, g_renderer, etc?
 	+ Global g_nnb var supplied 
@@ -53,14 +36,17 @@ g_window, g_renderer, etc?
 + Think about some common containers
 	+ Conversion from/to SDL/GLM equivalents?
 + Use assert() more often!
+	+ Maybe first find a framework for stuff like this?
 + Replace all uses of std::endl with \n. Blasphemy!
 + More toString()/operator<<() methods!
 + Unit tests for color (clamp et al?)
 + NNB_UNPACK unit tests!
 + Integrate THE image class
 	+ In nnb::Image, implement more wrapper modes.
-	+ Replace pointers (e.g. the ptr in pasteImage) with references
 + Unit tests for exist, getFiles, etc.
++ Make nnb_demo.exe, showcasing all the features! xD Sounds like a lot of work
+lol
++ Actually test the cursormanager
 
 ---------------
 -- Long term --

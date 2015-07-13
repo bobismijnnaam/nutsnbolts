@@ -36,7 +36,7 @@ TEST_CASE("Image class and image loading", "[img]") {
 		nnb::Image img;
 
 		SECTION("Loading a PNG") {
-			img.loadPng("red3x3.png");
+			REQUIRE(img.loadPng("red3x3.png"));
 
 			CHECK(img.getWidth() == 3);
 			CHECK(img.getHeight() == 3);
@@ -79,7 +79,8 @@ TEST_CASE("Image class and image loading", "[img]") {
 			CHECK(img.savePng("blue3x3.png"));
 			CHECK(nnb::exists("blue3x3.png"));
 
-			nnb::Image finalImg("blue3x3.png");
+			nnb::Image finalImg;
+			REQUIRE(finalImg.loadFile("blue3x3.png"));
 			CHECK(finalImg.getWidth() == 3);
 			CHECK(finalImg.getHeight() == 3);
 			for (int y = 0; y < finalImg.getHeight(); ++y) {
@@ -99,7 +100,8 @@ TEST_CASE("Image class and image loading", "[img]") {
 			CHECK(img.saveJpeg("blue3x3.jpeg", 100));
 			CHECK(nnb::exists("blue3x3.jpeg"));
 
-			nnb::Image finalImg("blue3x3.jpeg");
+			nnb::Image finalImg;
+			REQUIRE(finalImg.loadFile("blue3x3.jpeg"));
 			CHECK(finalImg.getWidth() == 3);
 			CHECK(finalImg.getHeight() == 3);
 			for (int y = 0; y < finalImg.getHeight(); ++y) {

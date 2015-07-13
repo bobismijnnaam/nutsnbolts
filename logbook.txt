@@ -220,7 +220,7 @@ the incomplete type :p
 20150610: Fixed the incomplete type thing. Also typed up an initial
 implementation of a png loader and a basic test framework.
 
-20150611: Time to debug that png thingy! Working on exist now as well, it
+20150611: Time to debug that png thingy! Working on nnb::exist now as well, it
 seems to be a bit buggy. Will have to write unit tests for that thing
 sometime. Wow, wrote a png reader/writer and a jpeg reader. Maybe tonight even
 a jpeg writer? Unit tests as well, pretty sweet. Jup, jpeg writer as well :)
@@ -232,3 +232,17 @@ but if that ever seems the case I'll add a few helper functions. Wow, actually
 completed 4 minor points on the to-do list today. Ka-ching! Maybe it's time to
 commit again :P Wrote a little specification for nnb::CursorManager (which
 uses nnb::Image! Yay :D)
+
+20150612: Made a skeleton for nnb::CursorManager, and already implemented
+system cursors. Turns out SDL2 does have facilities for colored cursors, only
+it wasn't documented that well. So we'll have monochrome and colored cursors!
+:D PINKPOP!
+
+20150613: Let's finish that cursormanager! And it looks like it's finished
+now. I'm curious about if it'll even work, lol. Added SDL_Surface conversion
+to nnb::Image, curious if it even works xD Removed an old color enumeration in
+favour of the new nnb::Colour (it was leftover somewhere in SDL_Helpers.hpp).
+nnb::Colour should now also have a few constant color instances, red, green,
+etc. Also moved the imageToSDL_Surface function to SDL_Helpers.cpp, to keep
+the nnb::Image nicely decoupled from SDL. Now it only depends in
+libjpeg/libpng and the stl, yay.

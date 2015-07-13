@@ -4,33 +4,11 @@
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 // Public
+#include <cstring>
 
 // Private
 #include "nnb/utils/SDL_Helpers.hpp"
-
-SDL_Color nnb::getSDL_Color(Color clr) {
-	switch(clr) {
-		case Color::RED:
-			return {255, 0, 0, 255};
-		case Color::GREEN:
-			return {0, 255, 0, 255};
-		case Color::BLUE:
-			return {0, 0, 255, 255};
-		case Color::YELLOW:
-			return {255, 255, 0, 255};
-		case Color::CYAN:
-			return {0, 255, 255, 255};
-		case Color::PURPLE:
-			return {255, 0, 255, 255};
-		case Color::WHITE:
-			return {255, 255, 255, 255};
-		case Color::BLACK:
-			return {0, 0, 0, 255};
-		default:
-			NNB_ERROR << "ERROR! Either a color is not yet defined or some crazy bug is crawling around";
-			return {0, 0, 0, 0};
-	}
-}
+#include "nnb/resources/CustomDeleters.hpp"
 
 bool nnb::pointInRect(SDL_Point p, SDL_Rect r) {
 	if (p.x >= r.x && p.x <= r.x + r.w) {
@@ -40,4 +18,14 @@ bool nnb::pointInRect(SDL_Point p, SDL_Rect r) {
 	}
 
 	return false;
+}
+
+std::unique_ptr<SDL_Surface, nnb::SDLDeleter> nnb::imageToSDL_Surface(nnb::Image const & img) {
+	auto surf = SDL_CreateRGBSurface(0, img.getWidth(), img.getHeight(), 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+
+	SDL_LockSurface(surf);
+	std::memcpy(surf->pixels, img.getBuffer(), img.getWidth() * img.getHeight() * 4);
+	SDL_UnlockSurface(surf);
+
+	return std::unique_ptr<SDL_Surface, nnb::SDLDeleter>(surf);
 }

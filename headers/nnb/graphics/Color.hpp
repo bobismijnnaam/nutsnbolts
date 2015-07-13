@@ -105,6 +105,14 @@ namespace nnb {
 	Color toColor(Tint t);
 	Tint toTint(Color c);
 
+	Color const RED = {255, 0, 0, 255};
+	Color const GREEN = {0, 255, 0, 255};
+	Color const BLUE = {0, 0, 255, 255};
+	Color const YELLOW = {255, 255, 0, 255};
+	Color const CYAN = {0, 255, 255, 255};
+	Color const PURPLE = {255, 0, 255, 255};
+	Color const WHITE = {255, 255, 255, 255};
+	Color const BLACK = {0, 0, 0, 255};
 }
 
 #endif // NNB_COLOR_HPP

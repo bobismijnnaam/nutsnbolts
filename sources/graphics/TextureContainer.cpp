@@ -85,8 +85,7 @@ void nnb::TextureContainer::setColor(Uint8 r, Uint8 g, Uint8 b) {
 }
 
 void nnb::TextureContainer::setColor(nnb::Color clr_) {
-	SDL_Color tempClr = getSDL_Color(clr_);
-	setColor(tempClr.r, tempClr.g, tempClr.b);
+	setColor(clr_.r, clr_.g, clr_.b);
 }
 
 void nnb::TextureContainer::setColor(SDL_Color clr_) {

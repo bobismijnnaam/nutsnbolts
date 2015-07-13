@@ -14,7 +14,7 @@
 
 // Private
 #include "nnb/graphics/TextureContainer.hpp"
-#include "nnb/utils/SDL_Helpers.hpp"
+#include "nnb/graphics/Color.hpp"
 #include "nnb/resources/CustomDeleters.hpp"
 
 namespace nnb {

@@ -18,6 +18,8 @@ namespace nnb {
 		void operator()(SDL_Window *p) const; 
 		void operator()(SDL_Renderer *p) const; 
 		void operator()(SDL_Texture *p) const; 
+		void operator()(SDL_Cursor *p) const;
+		void operator()(SDL_Surface *p) const;
 	} ;
 
 }

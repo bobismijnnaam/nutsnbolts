@@ -16,6 +16,8 @@
 #include "nnb/utils/Rect.hpp"
 #include "nnb/log/log.hpp"
 #include "nnb/utils/Directory.hpp"
+#include "nnb/resources/CustomDeleters.hpp"
+#include "nnb/utils/unique_ptr.hpp"
 
 namespace nnb {
 	// Default constructor. Constructs an empty transparent image of 0 pixels
@@ -37,13 +39,14 @@ namespace nnb {
 	}
 
 	// Constructs an image from a file
-	Image::Image(std::string file) :
-	w{0},
-	h{0} {
+	bool Image::loadFile(std::string file) {
 		if (endsWith(file, ".png")) {
-			loadPng(file);
+			return loadPng(file);
 		} else if (endsWith(file, ".jpg") || endsWith(file, ".jpeg")) {
-			loadJpeg(file);
+			return loadJpeg(file);
+		} else {
+			NNB_ERROR << "Unknown file format: " << file;
+			return false;
 		}
 	}
 
@@ -73,7 +76,8 @@ namespace nnb {
 
 	// Helper function to construct an image from a file
 	Image Image::fromFile(std::string file) {
-		Image result(file);
+		Image result;
+		result.loadFile(file);
 
 		return std::move(result);
 	}
@@ -100,28 +104,32 @@ namespace nnb {
 	}
 
 	// Constructs an image from a png
-	void Image::loadPng(std::string file) {
+	bool Image::loadPng(std::string file) {
 		int imW = -1, imH = -1;
 		auto imgBuf = readPng(file, &imW, &imH);
 		if (imgBuf.get() != nullptr) {
 			// Success
 			loadBytesRGBA(imgBuf.get(), imW, imH);
+			return true;
 		} else {
 			// Failure
 			NNB_ERROR << "Failed to load png: " << file;
+			return false;
 		}
 	}
 
 	// Constructs an image instance from a jpeg
-	void Image::loadJpeg(std::string file) {
+	bool Image::loadJpeg(std::string file) {
 		int imW = -1, imH = -1;
 		auto imgBuf = readJpeg(file, &imW, &imH);
 		if (imgBuf.get() != nullptr) {
 			// Success
 			loadBytesRGBA(imgBuf.get(), imW, imH);
+			return true;
 		} else {
 			// Failure
 			NNB_ERROR << "Failed to load jpeg: " << file;
+			return false;
 		}
 	}
 
@@ -309,17 +317,17 @@ namespace nnb {
 	}
 
 	// Pastes an images disregaring alpha channel, taking into account a given alpha channel
-	void Image::copyImage(int x, int y, Image const * otherImg, unsigned char alpha) {
+	void Image::copyImage(int x, int y, Image const & otherImg, unsigned char alpha) {
 		if (alpha == 255) {
-			for (int sy = 0; sy < otherImg->getHeight(); ++sy) {
-				for (int sx = 0; sx < otherImg->getWidth(); ++sx) {
-					setColor(x + sx, y + sy, otherImg->getColor(sx, sy));	
+			for (int sy = 0; sy < otherImg.getHeight(); ++sy) {
+				for (int sx = 0; sx < otherImg.getWidth(); ++sx) {
+					setColor(x + sx, y + sy, otherImg.getColor(sx, sy));	
 				}
 			}
 		} else {
-			for (int sy = 0; sy < otherImg->getHeight(); ++sy) {
-				for (int sx = 0; sx < otherImg->getHeight(); ++sx) {
-					Color oc = otherImg->getColor(sx, sy);
+			for (int sy = 0; sy < otherImg.getHeight(); ++sy) {
+				for (int sx = 0; sx < otherImg.getHeight(); ++sx) {
+					Color oc = otherImg.getColor(sx, sy);
 					Color c = getColor(x + sx, y + sy);
 
 					c.r = (c.r * (255 - alpha) + oc.r * alpha) / 255;
@@ -333,12 +341,12 @@ namespace nnb {
 	}
 
 	// Pastes an image assuming pre-multiplied alpha is the case
-	void Image::pasteImage(int x, int y, Image const * otherImg) {
-		for (int sy = 0; sy < otherImg->getHeight(); sy++) {
-			for (int sx = 0; sx < otherImg->getWidth(); sx++) {
+	void Image::pasteImage(int x, int y, Image const & otherImg) {
+		for (int sy = 0; sy < otherImg.getHeight(); sy++) {
+			for (int sx = 0; sx < otherImg.getWidth(); sx++) {
 				// First we convert the colors to tints
 				// Which are colors in the range [0,1] instead of [0, 255]
-				Tint ot = toTint(otherImg->getColor(sx, sy));
+				Tint ot = toTint(otherImg.getColor(sx, sy));
 				Tint t = toTint(getColor(x + sx, y + sy));
 
 				// Some awkward alpha blending formulas I found on the interwebs
@@ -384,29 +392,29 @@ namespace nnb {
 	}
 
 	// TODO: Optimize the inbetween image away
-	void Image::copyImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const * otherImg) {
+	void Image::copyImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const & otherImg) {
 		Image timg(sw, sh, {0, 0, 0, 0});
 
 		for (int ty = 0; ty < sh; ++ty) {
 			for (int tx = 0; tx < sw; ++tx) {
-				timg.setColor(tx, ty, otherImg->getColor(tx + sx, ty + sy));
+				timg.setColor(tx, ty, otherImg.getColor(tx + sx, ty + sy));
 			}
 		}
 
-		copyImage(x, y, &timg);
+		copyImage(x, y, timg);
 	}
 
 	// TODO: Optimize the inbetween image away
-	void Image::pasteImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const * otherImg) {
+	void Image::pasteImageRegion(int x, int y, int sx, int sy, int sw, int sh, Image const & otherImg) {
 		Image timg(sw, sh, {0, 0, 0, 0});
 
 		for (int ty = 0; ty < sh; ++ty) {
 			for (int tx = 0; tx < sw; ++tx) {
-				timg.setColor(tx, ty, otherImg->getColor(tx + sx, ty + sy));
+				timg.setColor(tx, ty, otherImg.getColor(tx + sx, ty + sy));
 			}
 		}
 
-		pasteImage(x, y, &timg);
+		pasteImage(x, y, timg);
 	}
 
 	// Sets the color modulation
@@ -438,7 +446,7 @@ namespace nnb {
 		}
 	}
 
-	unsigned char* Image::getBuffer() {
+	unsigned char* Image::getBuffer() const {
 		return img.get();
 	}
 
@@ -463,6 +471,6 @@ namespace nnb {
 		os << i.toString(); 
 		return os;
 	}
-
+	
 }
 
