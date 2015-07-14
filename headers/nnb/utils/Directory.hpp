@@ -25,6 +25,7 @@ namespace nnb {
 	 */
 
 	std::vector<std::string> getFiles(std::string tgtDir, std::string suffix = "");
+	std::vector<std::string> getFilesRecursively(std::string tgtDir);
 	bool fileExists(std::string path);
 	std::string folderFromPathToFile(std::string path);
 	std::string fileFromPathToFile(std::string path);

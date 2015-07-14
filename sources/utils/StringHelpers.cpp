@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 
 // Private
 #include "nnb/utils/StringHelpers.hpp"
@@ -65,7 +66,7 @@ namespace nnb {
 		}
 		
 		size_t j = input.size() - 1;
-		for (size_t i = suffix.size() - 1; i >= 0; --i, --j) {
+		for (int i = suffix.size() - 1; i >= 0; --i, --j) {
 			if (suffix[i] != input[j]) {
                 return false;
             }

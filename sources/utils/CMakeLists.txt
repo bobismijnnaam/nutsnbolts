@@ -6,5 +6,6 @@ set(SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/StringHelpers.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Random.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ImageLoaders.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/constants.cpp
 	PARENT_SCOPE
 )

@@ -16,7 +16,7 @@
 namespace nnb {
 
 	std::unique_ptr<unsigned char[]> readPng(std::string file, int *imgWidth, int *imgHeight) {
-		if (!nnb::exists(file)) {
+		if (!nnb::fileExists(file)) {
 			NNB_ERROR << "File not found: " << file;
 			return nullptr;
 		}
@@ -207,7 +207,7 @@ namespace nnb {
 	}
 
 	std::unique_ptr<unsigned char[]> readJpeg(std::string file, int *imgWidth, int *imgHeight) {
-		if (!nnb::exists(file)) {
+		if (!nnb::fileExists(file)) {
 			NNB_ERROR << "File not found: " << file;
 			return nullptr;
 		}

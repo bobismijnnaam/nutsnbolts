@@ -1,10 +1,15 @@
 // File: constants.hpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: di 22-07-2014
+// Creation date: 20140722
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 #ifndef NNB_CONSTANTS_HPP
 #define NNB_CONSTANTS_HPP
+
+// Public
+#include <string>
+
+// Private
 
 namespace nnb {
 
@@ -13,6 +18,7 @@ namespace nnb {
 	bool const SUCCESS = true;
 	bool const FAILURE = false;
 
+	extern std::string DIRSEP;
 }
 
 #endif

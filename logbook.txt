@@ -247,5 +247,8 @@ etc. Also moved the imageToSDL_Surface function to SDL_Helpers.cpp, to keep
 the nnb::Image nicely decoupled from SDL. Now it only depends in
 libjpeg/libpng and the stl, yay.
 
-20150714: Worked a bit on Directory.cpp and fleshed out the header of nnb::SoundManager. Also moved the default build
-mode to unix (ubuntu?). Should figure out a way to make cmake detect automatically what it should build for.
+20150713: Worked a bit on Directory.cpp and fleshed out the header of nnb::SoundManager. Also moved the default build
+mode to unix (ubuntu?). Should figure out a way to make cmake detect automatically what it should build for. Also,
+all tests pass again!
+
+20150714: Just added primitive support for cross platform-ness. Should test this as soon as I get a compiler on windows 8 available. Also added a recursive file discovery function, and a test for it. Gotta add some more tests for those directory functions :S Also added a platform-dependant DIRSEP global constant, depends on some variables set in cmake.

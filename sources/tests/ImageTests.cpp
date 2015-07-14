@@ -75,9 +75,9 @@ TEST_CASE("Image class and image loading", "[img]") {
 
 		SECTION("Writing a PNG") {
 			std::system("rm blue3x3.png");
-			CHECK_FALSE(nnb::exists("blue3x3.png"));
+			CHECK_FALSE(nnb::fileExists("blue3x3.png"));
 			CHECK(img.savePng("blue3x3.png"));
-			CHECK(nnb::exists("blue3x3.png"));
+			CHECK(nnb::fileExists("blue3x3.png"));
 
 			nnb::Image finalImg;
 			REQUIRE(finalImg.loadFile("blue3x3.png"));
@@ -96,9 +96,9 @@ TEST_CASE("Image class and image loading", "[img]") {
 
 		SECTION("Writing a JPEG") {
 			std::system("rm blue3x3.jpeg");
-			CHECK_FALSE(nnb::exists("blue3x3.jpeg"));
+			CHECK_FALSE(nnb::fileExists("blue3x3.jpeg"));
 			CHECK(img.saveJpeg("blue3x3.jpeg", 100));
-			CHECK(nnb::exists("blue3x3.jpeg"));
+			CHECK(nnb::fileExists("blue3x3.jpeg"));
 
 			nnb::Image finalImg;
 			REQUIRE(finalImg.loadFile("blue3x3.jpeg"));
