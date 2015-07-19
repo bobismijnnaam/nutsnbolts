@@ -5,6 +5,6 @@ set(SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/Settings.cpp
 #	${CMAKE_CURRENT_SOURCE_DIR}/TextureGroup.cpp
 #	${CMAKE_CURRENT_SOURCE_DIR}/TextureManager.cpp
-#	${CMAKE_CURRENT_SOURCE_DIR}/SoundManager.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/SoundManager.cpp
 	PARENT_SCOPE
 )

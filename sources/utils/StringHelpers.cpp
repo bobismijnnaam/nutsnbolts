@@ -172,6 +172,15 @@ namespace nnb {
 
 		return lines;
 	}
-	
+
+	std::string readFile(std::string file) {
+		auto contents = readLines(file);
+		std::string result = "";
+		for (std::string line : contents) {
+			result += line + "\n";
+		}
+
+		return result;
+	}
 
 }

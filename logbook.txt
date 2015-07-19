@@ -247,8 +247,24 @@ etc. Also moved the imageToSDL_Surface function to SDL_Helpers.cpp, to keep
 the nnb::Image nicely decoupled from SDL. Now it only depends in
 libjpeg/libpng and the stl, yay.
 
-20150713: Worked a bit on Directory.cpp and fleshed out the header of nnb::SoundManager. Also moved the default build
-mode to unix (ubuntu?). Should figure out a way to make cmake detect automatically what it should build for. Also,
-all tests pass again!
+20150713: Worked a bit on Directory.cpp and fleshed out the header of
+nnb::SoundManager. Also moved the default build mode to unix (ubuntu?).
+Should figure out a way to make cmake detect automatically what it should
+build for. Also, all tests pass again!
 
-20150714: Just added primitive support for cross platform-ness. Should test this as soon as I get a compiler on windows 8 available. Also added a recursive file discovery function, and a test for it. Gotta add some more tests for those directory functions :S Also added a platform-dependant DIRSEP global constant, depends on some variables set in cmake.
+20150714: Just added primitive support for cross platform-ness. Should test
+this as soon as I get a compiler on windows 8 available. Also added a recursive
+file discovery function, and a test for it. Gotta add some more tests for
+those directory functions :S Also added a platform-dependant DIRSEP global
+constant, depends on some variables set in cmake.
+
+20150718: It seems that SoundManager is finished. Have done no debugging though.
+Should do that soon. Also added two extra overloads to SDLDeleter, namely Mix_Chunk
+and Mix_Music. I'm gonna try building SoundManager now. Wow, lots of errors.
+This will take a while. Woah, all those errors pretty much proved I'm dead tired
+AND still a shitty programmer :p I'll have to review that code tomorrow or smth.
+And unit tests, altough I have no idea how that is gonna work.
+
+20150719: Turns out I was able to get SoundManager to work with minimal changes.
+I'm quite pleased with that :-) Don't have time/energy to thourougly test it
+so time will have to tell once I actually start using the thing.

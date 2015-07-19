@@ -9,8 +9,11 @@
 // Public
 #include <string>
 #include <SDL2/SDL_mixer.h>
+#include <map>
+#include <memory>
 
 // Private
+#include "nnb/resources/CustomDeleters.hpp"
 
 namespace nnb {
 
@@ -22,29 +25,21 @@ namespace nnb {
 	 */
 	class SoundManager {
 	public:
-		SoundManager(int channels = 32, std::string base_ = "media/sound/");
+		SoundManager(int channels_ = MIX_DEFAULT_CHANNELS, std::string base_ = "media/sound/");
+		~SoundManager();
 
 		void doIndexing();
-
-		void loadMusic(std::string name);
-		void loadSound(std::string name);
-		
-		Mix_Chunk* loadSound(std::string name);
-		Mix_Music* loadMusic(std::string name);
-
+		void load(std::string name);
 		void unload(std::string name);
-		void unload(Mix_Chunk* chunk);
-		void unload(Mix_Music* music);
-
-		void playSound(Mix_Chunk* chunk, double volume = 100);
-		void playSound(std::string name, double volume = 100);
-
-		void playMusic(Mix_Music* music, double volume = 100);
-		void playMusic(std::string name, double volume = 100);
+		void play(std::string name, int loops = 0, double volume = 100);
 
 	private:
 		std::string base;
+		int channels;
+		std::map<std::string, std::string> nameLocationMap;
 
+		std::map<std::string, std::unique_ptr<Mix_Chunk, SDLDeleter>> chunks;
+		std::map<std::string, std::unique_ptr<Mix_Music, SDLDeleter>> musics;
 	} ;
 }
 

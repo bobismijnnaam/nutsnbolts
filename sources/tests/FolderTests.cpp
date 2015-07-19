@@ -13,21 +13,6 @@
 #include "nnb/utils/constants.hpp"
 
 TEST_CASE("Directory functionality", "[dir]") {
-
-//    SECTION("Memory management") {
-//        nnb::Image stackImg(100, 100, {50, 50, 50});
-//
-//        auto heapImg = new nnb::Image(std::move(stackImg));
-//
-//        CHECK(stackImg.getBuffer() == nullptr);
-//        CHECK(heapImg->getBuffer() != nullptr);
-//
-//        nnb::Image otherStackImg(std::move(*heapImg));
-//
-//        CHECK(heapImg->getBuffer() == nullptr);
-//        CHECK(otherStackImg.getBuffer() != nullptr);
-//    }
-
     SECTION("Recursive file discovery") {
         auto allFiles = nnb::getFilesRecursively("testfolder" + nnb::DIRSEP);
 

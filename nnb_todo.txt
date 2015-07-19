@@ -29,14 +29,12 @@ g_window, g_renderer, etc?
 		+ ex: g_nnb["scrW"].int() should return an int
 + StateMachine
 	+ Some default transitions, and some default loading screens
-+ Make CMake gobble up all the headers 'n stuff
++ Move to a more flat file structure (all source files in src, includes in headers/nnb)
 + A thing to handle fragment/vertex shaders
-+ SoundManager! Also in context
 + Change math stuff into glm classes?
 + Think about some common containers
 	+ Conversion from/to SDL/GLM equivalents?
 + Use assert() more often!
-	+ Maybe first find a framework for stuff like this?
 + Replace all uses of std::endl with \n. Blasphemy!
 + More toString()/operator<<() methods!
 + Unit tests for color (clamp et al?)

@@ -27,3 +27,11 @@ void nnb::SDLDeleter::operator()(SDL_Cursor *p) const {
 void nnb::SDLDeleter::operator()(SDL_Surface *p) const {
 	SDL_FreeSurface(p);
 }
+
+void nnb::SDLDeleter::operator()(Mix_Chunk *p) const {
+	Mix_FreeChunk(p);
+}
+
+void nnb::SDLDeleter::operator()(Mix_Music *p) const {
+	Mix_FreeMusic(p);
+}

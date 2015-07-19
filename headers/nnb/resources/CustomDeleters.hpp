@@ -8,20 +8,20 @@
 
 // Public
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
 
 // Private
-#include "nnb/states/GameStateMachine.hpp"
 
 namespace nnb {
-
 	struct SDLDeleter {
 		void operator()(SDL_Window *p) const; 
 		void operator()(SDL_Renderer *p) const; 
 		void operator()(SDL_Texture *p) const; 
 		void operator()(SDL_Cursor *p) const;
 		void operator()(SDL_Surface *p) const;
+		void operator()(Mix_Chunk *p) const;
+		void operator()(Mix_Music *p) const;
 	} ;
-
 }
 
 #endif

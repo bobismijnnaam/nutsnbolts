@@ -14,7 +14,6 @@
 // Private
 
 namespace nnb {
-
 	std::vector<std::string> split(std::string input, std::string delimiter);
 	std::tuple<std::string, std::string> chopLeft(std::string input, std::string delimiter);
 	std::tuple<std::string, std::string> chopRight(std::string input, std::string delimiter);
@@ -34,7 +33,7 @@ namespace nnb {
 	long stol(std::string p);
 
 	std::vector<std::string> readLines(std::string file);
-
+	std::string readFile(std::string file);
 }
 
 #endif
