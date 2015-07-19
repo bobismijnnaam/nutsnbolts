@@ -267,4 +267,5 @@ And unit tests, altough I have no idea how that is gonna work.
 
 20150719: Turns out I was able to get SoundManager to work with minimal changes.
 I'm quite pleased with that :-) Don't have time/energy to thourougly test it
-so time will have to tell once I actually start using the thing.
+so time will have to tell once I actually start using the thing. Worked a
+very small bit on nnb::Context. Too damn tired man.
