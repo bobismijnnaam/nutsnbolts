@@ -9,7 +9,7 @@
 // Public
 
 // Private
-#include "nnb/utils/randutils.hpp"
+#include "randutils.hpp"
 
 namespace nnb {
 	extern thread_local randutils::mt19937_rng rng;
