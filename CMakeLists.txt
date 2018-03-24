@@ -14,6 +14,7 @@ endif()
 
 include_directories("${PROJECT_SOURCE_DIR}/headers")
 include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories("/usr/include")
 
 add_subdirectory(sources)
 
@@ -21,9 +22,18 @@ add_library(nutsnbolts STATIC
 	${SOURCES}
 )
 
-target_link_libraries(nutsnbolts SDL2_image SDL2_mixer SDL2_ttf SDL2main SDL2 png jpeg z)
+target_link_libraries( nutsnbolts
+    SDL2main
+    SDL2
+    png
+    jpeg
+    z
+    )
+
 if (WIN32)
 	target_link_libraries(mingw32)
+elseif (UNIX)
+    link_directories("/usr/lib/x86_64-linux-gnu")
 endif()
 
 

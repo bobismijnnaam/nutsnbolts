@@ -49,7 +49,7 @@ namespace nnb {
 		std::string windowTitle;
 		int windowW, windowH, windowX, windowY;
 		bool windowFullscreen, windowDesktopsize;
-		bool initWindow = false;
+		bool windowIsInitialised = false;
 
 		// GL Parameters
 		bool gl = false;
