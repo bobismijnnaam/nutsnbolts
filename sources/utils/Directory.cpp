@@ -4,8 +4,8 @@
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 // Public
-#include <string>
 #include <dirent.h>
+#include <string>
 #include <vector>
 #include <algorithm>
 
@@ -14,6 +14,7 @@
 #include "nnb/utils/Directory.hpp"
 #include "nnb/utils/StringHelpers.hpp"
 #include "nnb/utils/constants.hpp"
+// #include "./../tools/dirent.h"
 
 // TODO: (Possibly optional?) runtime checking of the format of the arguments of all the file paths and such
 // Or just plain conversion from anything to frontslashed paths

@@ -8,6 +8,7 @@
 
 // Public
 #include <memory>
+#include <string>
 
 // Private
 

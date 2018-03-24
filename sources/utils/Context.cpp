@@ -56,21 +56,26 @@ namespace nnb {
 
 		int Context::getInt(std::string name) {
 			NNB_ERROR << "getInt() not yet implemented";
+			return 0;
 		}
 
 		std::string Context::getString(std::string name) {
 			NNB_ERROR << "getString() not yet implemented";
+			return "";
 		}
 
 		double Context::getDouble(std::string name) {
 			NNB_ERROR << "getDouble() not yet implemented";
+			return 0.0;
 		}
 
 		int Context::getScrW() {
 			NNB_ERROR << "getScrW() not yet implemented";
+			return 5;
 		}
 
 		int Context::getScrH() {
 			NNB_ERROR << "getScrH() not yet implemented";
+			return 6;
 		}
 }
