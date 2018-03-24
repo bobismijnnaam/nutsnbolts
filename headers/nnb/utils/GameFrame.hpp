@@ -21,6 +21,8 @@ namespace nnb {
 	class Subsystem {
 	public:
 		Subsystem(std::string name_);
+        virtual ~Subsystem() = default;
+
 		virtual bool init() = 0;
 		virtual bool quit() = 0;
 		virtual std::string getError();

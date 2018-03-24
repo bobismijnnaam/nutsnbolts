@@ -2,5 +2,7 @@ set(SOURCES
 	${SOURCES}
 	${CMAKE_CURRENT_SOURCE_DIR}/GameState.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/GameStateMachine.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/SimpleGameState.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/StateFactory.cpp
 	PARENT_SCOPE
 )

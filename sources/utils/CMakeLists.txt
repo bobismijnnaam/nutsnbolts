@@ -8,5 +8,7 @@ set(SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/ImageLoaders.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/constants.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Context.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/GameFrame.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Subsystems.cpp
 	PARENT_SCOPE
 )

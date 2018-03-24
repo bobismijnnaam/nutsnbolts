@@ -1,45 +1,60 @@
 // File: GameStateMachine.hpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: 2015-05-15
+// Creation date: ma 20-01-2014
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
-#ifndef NNB_GAMESTATEMACHINE_HPP
-#define NNB_GAMESTATEMACHINE_HPP
+#ifndef NNB_STATEMACHINE_HPP
+#define NNB_STATEMACHINE_HPP
 
 // Public
-#include <memory>
+#include <unordered_map>
+#include <stack>
+#include <string>
 
 // Private
-#include "nnb/states/GameState.hpp"
-
-/*
- * Example usage:
- *
- * Setting a new state:
- * g_gm->setState(new MainMenu());
- * g_gm->setState(new SmoothTransition(g_gm->getState(), new Game()));
- * g_gm->setState(new LoadAndTransition(g_gm->getState(), new Settings()));
- *
- * Propagating new states and running the current state
- * g_gm->switchStates();
- * g_gm->update();
- *
- * Indicating that the machine should exit
- * g_gm->exit = true;
- * Note, this doesn't actually do anything. The idea is that the outside loop checks this value each loop, and once it's true it should exit. Nice and simple
- */
+#include "State.hpp"
 
 namespace nnb {
-	struct GameStateMachine {
-		GameStateMachine(std::shared_ptr<GameState> state_);
+
+	enum class StateAction {
+		SET,
+		PUSH,
+		POP,
+		NONE
+	} ;
+
+	std::string stateActionToString(StateAction a);
+
+	class State;
+
+	class GameStateMachine {
+	public:
+		GameStateMachine();
+		~GameStateMachine();
 
 		void update();
-		void setState(std::shared_ptr<GameState> state_);
-		void switchStates();
+		void setState(std::string stateID);
+		void pushState(std::string stateID);
+		void popState();
+		void exit();
+		std::string getCurrentStateID();
 
-		bool exit = true;
-		std::shared_ptr<GameState> state, nextState;
+		static constexpr auto STATE_NONE = "__NO_CLASS_SELECTED__";
+		static constexpr auto STATE_NULL = "__NULL__";
+		static constexpr auto STATE_EXIT = "__EXIT__";
+
+	private:
+		void emptyStateStack();
+		void changeState(StateAction inputAction, std::string inputTarget);
+
+		std::stack<State*> stateStack;
+
+		StateAction action = StateAction::NONE;
+		std::string target = STATE_NONE;
+
+		bool quit = false;
 	} ;
+
 }
 
-#endif // NNB_GAMESTATEMACHINE_HPP
+#endif

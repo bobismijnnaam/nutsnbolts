@@ -1,39 +1,65 @@
 // File: GameState.hpp
 // Author: Bob Rubbens - Knights of the Compiler
-// Creation date: 2015-05-15
+// Creation date: ma 20-01-2014
 // Contact: http://plusminos.nl - @broervanlisa - gmail (bobrubbens)
 
 #ifndef NNB_GAMESTATE_HPP
 #define NNB_GAMESTATE_HPP
 
 // Public
-#include <SDL2/SDL.h>
-#include <vector>
 #include <string>
+#include <SDL2/SDL.h>
 
 // Private
+#include "nnb/states/StateFactory.hpp"
+#include "nnb/states/State.hpp"
+
 
 namespace nnb {
-	struct GameState {
-		virtual ~GameState();
 
-		virtual void update();
-		virtual void enter();
-		virtual void leave();
-		virtual std::vector<std::string> resources();
+	template <typename T, T /*unnamed*/>
+	struct InitProxy { };
+
+	template <
+		class T
+	>
+	class GameState : public State {
+	public:
+		GameState() : State(T::id) {}
+		virtual ~GameState() {}; 
+
+		/**
+		 * Does the logic of that state
+		 */
+		virtual void update() = 0; 
+
+		/**
+		 * Is called to notify the instance it will be used again
+		 */
+		virtual void activate() = 0;
+
+		/**
+		 * Is called to notify the instance that from that moment on it will be paused
+		 */
+		virtual void deactivate() = 0;
+
+	protected:
+		struct Proxy {
+			Proxy() {
+				nnb::GameStatePark::record<T>();
+			}
+		};
+		static Proxy proxy;
+		// For more info see: http://stackoverflow.com/questions/27672559/using-static-initialization-to-register-classes/27677642#27677642
+		typedef InitProxy<Proxy&, proxy> __nnb_typedef_dummy__; // The spelling of the second part is not relevant as it's never used - just to force instantiation
+
 	} ;
 
-	struct CoolGameState : public GameState {
-		CoolGameState(int fps_ = 60);
+	template<
+		class T
+	>
+	typename GameState<T>::Proxy GameState<T>::proxy;
 
-		void update();
-		virtual void event(SDL_Event e);
-		virtual void logic(double dt);
-		virtual void render() const;
-
-		int fps;
-		double lag = 0;
-	} ;
 }
 
-#endif // NNB_GAMESTATE_HPP
+#endif
